@@ -1,4 +1,4 @@
-from yapb import db, login_manager
+from yapb import db
 from hashlib import md5
 import yapb.config as config
 
@@ -20,7 +20,7 @@ class User(db.Model):
         self.id = None
 
     def to_dict(self):
-        return {"name": self.name, "email": self.email, "id": self.id, "passwd_hash": self.passwd_hash}
+        return {"name": self.name, "email": self.email}
 
     @property
     def is_active(self):
@@ -68,10 +68,3 @@ class User(db.Model):
             return users.first()
         else:
             return None
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    """ Require by flask_login """
-    user_id = int(user_id)
-    return User.query.filter_by(id=user_id).first()
