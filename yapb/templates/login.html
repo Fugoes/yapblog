@@ -3,12 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <script>
+        function do_login() {
+            var post_data = {
+                name: $("#user_name").val(),
+                passwd: $("#user_password").val()
+            };
+
+            $.post("/api/login", post_data, function (result) {
+                $("#msg_box").text(result.msg);
+            }, "json");
+        }
+
+        $(function () {
+            $("#login_form").on("submit", function (ev) {
+                ev.preventDefault();
+                do_login();
+            });
+        });
+    </script>
 </head>
 <body>
-<form action="/login" method="post">
-    <p>Name: <input type="text" name="name"/></p>
-    <p>Password: <input type="password" name="passwd"></p>
-    <input type="submit" value="Submit"/>
+<form id="login_form">
+    <p>Name: <input type="text" id="user_name"/></p>
+    <p>Password: <input type="password" id="user_password"></p>
+    <input type="submit" value="Login" id="login_button"/>
 </form>
+<div id="msg_box"></div>
 </body>
 </html>

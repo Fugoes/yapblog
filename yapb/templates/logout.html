@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logout</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <script>
+        function do_logout() {
+            $.get("/api/logout", function (result) {
+                alert(result.msg);
+            }, "json");
+        }
+
+        $(function () {
+            $("#logout_button").click(function () {
+                do_logout();
+            });
+        });
+    </script>
+</head>
+<body>
+<button id="logout_button">Logout</button>
+</body>
+</html>

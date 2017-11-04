@@ -1,9 +1,11 @@
-from flask_login import logout_user, login_required
+__all__ = ["logout"]
+
+from flask import render_template
+from flask_login import login_required
 from yapb import app
 
 
 @app.route("/logout", methods=["GET"])
 @login_required
 def logout():
-    logout_user()
-    return "Logout"
+    return render_template("logout.html")

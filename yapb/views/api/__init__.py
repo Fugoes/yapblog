@@ -1,3 +1,3 @@
-__all__ = ["api_user"]
-
-from yapb.views.api.user import api_user
+from yapb.views.api.user import *
+from yapb.views.api.login import *
+from yapb.views.api.logout import *
