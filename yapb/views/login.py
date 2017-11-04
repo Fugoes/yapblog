@@ -1,6 +1,6 @@
 __all__ = ["login"]
 
-from flask import request, render_template, redirect, g
+from flask import request, render_template
 from yapb import app
 
 

@@ -18,8 +18,10 @@
 
         $(function () {
             $("#login_form").on("submit", function (ev) {
+                $("#login_button").prop("disabled", true);
                 ev.preventDefault();
                 do_login();
+                $("#login_button").prop("disabled", false);
             });
         });
     </script>

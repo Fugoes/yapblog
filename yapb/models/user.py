@@ -24,17 +24,21 @@ class User(db.Model):
 
     @property
     def is_active(self):
+        """ Require by flask_login """
         return True
 
     @property
     def is_authenticated(self):
+        """ Require by flask_login """
         return self.id is not None
 
     @property
     def is_anonymous(self):
+        """ Require by flask_login """
         return False
 
     def get_id(self):
+        """ Require by flask_login """
         return str(self.id)
 
     def __repr__(self):
@@ -68,5 +72,6 @@ class User(db.Model):
 
 @login_manager.user_loader
 def load_user(user_id):
+    """ Require by flask_login """
     user_id = int(user_id)
     return User.query.filter_by(id=user_id).first()
