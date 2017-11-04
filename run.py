@@ -2,6 +2,7 @@
 
 from yapb import app
 from yapb.views import *
+from yapb.models import *
 
 import yapb.config as config
 
