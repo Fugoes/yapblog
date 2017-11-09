@@ -4,7 +4,7 @@
 
 # Requirement
 
-Please install `python3`, `flask`, `flask_sqlalchemy`.
+Please install `python3`, `flask`,`flask-login`, `flask_sqlalchemy`.
 
 # Project Structure
 
