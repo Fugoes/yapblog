@@ -1,10 +1,10 @@
-# yapb
+# yapblog
 
-`yapb` is acronym for `yet another personal blog`.
+`yapblog` is acronym for `yet another personal blog`.
 
 # Requirement
 
-Please install `python3`, `flask`,`flask-login`, `flask_sqlalchemy`.
+Please install `python3`, `flask`,`flask-login`, `flask-sqlalchemy`.
 
 # Project Structure
 
