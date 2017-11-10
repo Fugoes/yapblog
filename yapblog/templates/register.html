@@ -2,38 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-        <title>Register</title>
-	    <script src="/static/jquery-3.2.1.min.js"></script>
-	        <script>
-		        function do_register() {
-			            var post_data = {
-				                    name: $("#user_name").val(),
-						    email:$("#user_email").val(),
-						    passwd: $("#user_password").val()
-						    confirm_passwd: $("#user_confirm_pw").val()
-					         };
-				                $.post("/api/register", post_data, function (result) {
-																			                $("#msg_box").text(result.msg);
-																					            }, "json");
-																						            }
-																							            $(function () {
-																								                $("#register_form").on("submit", function (ev) {
-																										                $("#reg_button").prop("disabled", true);
-																												                ev.preventDefault();
-																														                do_register();
-																																                $("#reg_button").prop("disabled", false);
-																																		            });
-																																			            });
-																																				        </script>
-																																					</head>
-																																					<body>
-																																					<form id="register_form">
-																																					    <p>Name: <input type="text" id="user_name"/></p>
-																																					    	<p>Email: <input type="text" id="user_email"/></p>
-																																						    <p>Password: <input type="password" id="user_password"></p>
-																																						    	<p>Confirm Password: <input type="password" id="user_confirm_pw"/></p>
-																																							    <input type="submit" value="Register" id="reg_button"/>
-																																							    </form>
-																																							    <div id="msg_box"></div>
-																																							    </body>
-																																							    </html>
+    <title>Register</title>
+    <script src="/static/jquery-3.2.1.min.js"></script>
+    <script>
+        function do_register() {
+            var post_data = {
+                name: $("#user_name").val(),
+                email:$("#user_email").val(),
+                passwd: $("#user_password").val()
+                confirm_passwd: $("#user_confirm_pw").val()
+            };
+            $.post("/api/register", post_data, function (result) {
+                $("#msg_box").text(result.msg);
+            }, "json");
+        }
+        $(function () {
+            $("#register_form").on("submit", function (ev) {
+                $("#reg_button").prop("disabled", true);
+                ev.preventDefault();
+                do_register();
+                $("#reg_button").prop("disabled", false);
+            });
+        });
+    </script>
+</head>
+<body>
+<form id="register_form">
+    <p>Name: <input type="text" id="user_name"/></p>
+    <p>Email: <input type="text" id="user_email"/></p>
+    <p>Password: <input type="password" id="user_password"></p>
+    <p>Confirm Password: <input type="password" id="user_confirm_pw"/></p>
+    <input type="submit" value="Register" id="reg_button"/>
+</form>
+<div id="msg_box"></div>
+</body>
+</html>
