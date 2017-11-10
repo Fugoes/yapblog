@@ -1,1 +1,0 @@
-from yapb.models.user import *

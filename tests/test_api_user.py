@@ -1,5 +1,5 @@
 import requests
-import yapb.config as config
+import yapblog.config as config
 
 url = "http://%s:%d/api/user" % (config.HOST, config.PORT)
 

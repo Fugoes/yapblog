@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-import yapb.config as config
+import yapblog.config as config
 
 # Init app
 app = Flask(__name__)
@@ -17,9 +17,9 @@ login_manager.init_app(app)
 login_manager.session_protection = "strong"
 
 # Load all models
-from yapb.models import *
+from yapblog.models import *
 # Load all views
-from yapb.views import *
+from yapblog.views import *
 
 
 @login_manager.user_loader

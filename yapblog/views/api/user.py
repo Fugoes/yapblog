@@ -2,9 +2,9 @@ __all__ = ["api_user"]
 
 from flask import request
 from sqlalchemy.exc import IntegrityError
-from yapb import app, db
-from yapb.models import User
-from yapb.lib.api import ok, not_ok
+from yapblog import app, db
+from yapblog.models import User
+from yapblog.lib.api import ok, not_ok
 
 
 @app.route("/api/user", methods=["POST"])

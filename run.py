@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from yapb import app
-import yapb.config as config
+from yapblog import app
+import yapblog.config as config
 
 app.run(
     host=config.HOST,

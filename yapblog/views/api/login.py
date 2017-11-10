@@ -2,9 +2,9 @@ __all__ = ["api_login"]
 
 from flask import request
 from flask_login import current_user, login_user
-from yapb import app
-from yapb.lib.api import ok, not_ok
-from yapb.models import User
+from yapblog import app
+from yapblog.lib.api import ok, not_ok
+from yapblog.models import User
 
 
 @app.route("/api/login", methods=["POST"])

@@ -1,8 +1,8 @@
 __all__ = ["test_show_users_with_api", "test_show_users"]
 
 from flask import render_template
-from yapb import app
-from yapb.models import User
+from yapblog import app
+from yapblog.models import User
 
 
 @app.route("/test/show_users")
