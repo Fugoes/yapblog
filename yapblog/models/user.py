@@ -1,6 +1,6 @@
-from yapb import db
+from yapblog import db
 from hashlib import md5
-import yapb.config as config
+import yapblog.config as config
 
 
 def md5_with_salt(passwd):

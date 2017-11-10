@@ -1,8 +1,8 @@
 __all__=["api_register"]
 
 from flask import request
-from yapb import app
-from yapb.lib.api import ok,not_ok
+from yapblog import app
+from yapblog.lib.api import ok,not_ok
 
 @app.route("/api/register",methods=["POST"])
 def api_register():

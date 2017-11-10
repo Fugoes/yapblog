@@ -2,7 +2,7 @@ __all__ = ["logout"]
 
 from flask import render_template
 from flask_login import login_required
-from yapb import app
+from yapblog import app
 
 
 @app.route("/logout", methods=["GET"])

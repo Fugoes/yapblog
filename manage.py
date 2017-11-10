@@ -10,8 +10,8 @@ def help():
 
 if len(argv) == 2:
     if argv[1] == "create-database":
-        from yapb import db
-        from yapb.models import *
+        from yapblog import db
+        from yapblog.models import *
 
         db.create_all()
 

@@ -1,7 +1,7 @@
 __all__ = ["register"]
 
 from flask import request,render_template
-from yapb import app
+from yapblog import app
 
 @app.route("/register",methods=["GET"])
 def register():

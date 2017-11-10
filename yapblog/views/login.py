@@ -1,7 +1,7 @@
 __all__ = ["login"]
 
 from flask import request, render_template
-from yapb import app
+from yapblog import app
 
 
 @app.route("/login", methods=["GET"])

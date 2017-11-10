@@ -1,8 +1,8 @@
 __all__ = ["api_logout"]
 
 from flask_login import current_user, logout_user
-from yapb import app
-from yapb.lib.api import ok, not_ok
+from yapblog import app
+from yapblog.lib.api import ok, not_ok
 
 
 @app.route("/api/logout", methods=["GET"])
