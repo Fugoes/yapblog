@@ -98,4 +98,4 @@ ENV/
 .mypy_cache/
 *.ipynb
 *.csv
-yapb.db
+yapblog.db
