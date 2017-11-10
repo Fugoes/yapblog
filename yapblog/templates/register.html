@@ -6,15 +6,18 @@
     <script src="/static/jquery-3.2.1.min.js"></script>
     <script>
         function do_register() {
-            var post_data = {
-                name: $("#user_name").val(),
-                email:$("#user_email").val(),
-                passwd: $("#user_password").val()
-                confirm_passwd: $("#user_confirm_pw").val()
-            };
-            $.post("/api/register", post_data, function (result) {
-                $("#msg_box").text(result.msg);
-            }, "json");
+            if ($("#user_passwd").val() === $("#user_confirm_passwd").val()) {
+                var post_data = {
+                    name: $("#user_name").val(),
+                    email: $("#user_email").val(),
+                    passwd: $("#user_passwd").val()
+                };
+                $.post("/api/user", post_data, function (result) {
+                    $("#msg_box").text(result.msg);
+                }, "json");
+            } else {
+                $("#msg_box").text("Unmatched password and confirm password.");
+            }
         }
         $(function () {
             $("#register_form").on("submit", function (ev) {
@@ -30,8 +33,8 @@
 <form id="register_form">
     <p>Name: <input type="text" id="user_name"/></p>
     <p>Email: <input type="text" id="user_email"/></p>
-    <p>Password: <input type="password" id="user_password"></p>
-    <p>Confirm Password: <input type="password" id="user_confirm_pw"/></p>
+    <p>Password: <input type="password" id="user_passwd"></p>
+    <p>Confirm Password: <input type="password" id="user_confirm_passwd"/></p>
     <input type="submit" value="Register" id="reg_button"/>
 </form>
 <div id="msg_box"></div>
