@@ -20,10 +20,12 @@ login_manager.session_protection = "strong"
 from yapblog.models import *
 # Load all views
 from yapblog.views import *
+# Load all apis
+from yapblog.api import *
 
 
 @login_manager.user_loader
 def load_user(user_id):
     """ Required by flask_login """
     user_id = int(user_id)
-    return User.query.filter_by(id=user_id).first()
+    return User.query.filter_by(uid=user_id).first()

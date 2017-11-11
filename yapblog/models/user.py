@@ -1,5 +1,6 @@
-from yapblog import db
+from sqlalchemy.exc import IntegrityError
 from hashlib import md5
+from yapblog import db
 import yapblog.config as config
 
 
@@ -8,7 +9,7 @@ def md5_with_salt(passwd):
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
     passwd_hash = db.Column(db.String(32))
@@ -17,7 +18,7 @@ class User(db.Model):
         self.name = name
         self.email = email
         self.passwd_hash = md5_with_salt(passwd)
-        self.id = None
+        self.uid = None
 
     def to_dict(self):
         return {"name": self.name, "email": self.email}
@@ -30,7 +31,7 @@ class User(db.Model):
     @property
     def is_authenticated(self):
         """ Require by flask_login """
-        return self.id is not None
+        return self.uid is not None
 
     @property
     def is_anonymous(self):
@@ -39,7 +40,7 @@ class User(db.Model):
 
     def get_id(self):
         """ Require by flask_login """
-        return str(self.id)
+        return str(self.uid)
 
     def __repr__(self):
         return "<User %s>" % self.name
@@ -68,3 +69,13 @@ class User(db.Model):
             return users.first()
         else:
             return None
+
+    @staticmethod
+    def register_user(name, email, passwd):
+        new_user = User(name, email, passwd)
+        db.session.add(new_user)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            return False
+        return True

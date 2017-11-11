@@ -11,8 +11,13 @@
                 passwd: $("#user_password").val()
             };
 
-            $.post("/api/login", post_data, function (result) {
-                $("#msg_box").text(result.msg);
+            $.post("/api/user/login", post_data, function (result) {
+                var msg_box = $("#msg_box");
+                if (result.ok === true) {
+                    msg_box.text(result.uid);
+                } else {
+                    msg_box.text(result.msg);
+                }
             }, "json");
         }
 

@@ -6,8 +6,12 @@
     <script src="/static/jquery-3.2.1.min.js"></script>
     <script>
         function do_logout() {
-            $.get("/api/logout", function (result) {
-                alert(result.msg);
+            $.get("/api/user/logout", function (result) {
+                if (result.ok) {
+                    alert("Logout successfully!");
+                } else {
+                    alert("You are not logged in!");
+                }
             }, "json");
         }
 
