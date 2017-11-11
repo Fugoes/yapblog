@@ -6,11 +6,12 @@
     <script src="/static/jquery-3.2.1.min.js"></script>
     <script>
         function do_register() {
-            if ($("#user_passwd").val() === $("#user_confirm_passwd").val()) {
+            var passwd = $("#user_passwd").val();
+            if (passwd === $("#user_confirm_passwd").val()) {
                 var post_data = {
                     name: $("#user_name").val(),
                     email: $("#user_email").val(),
-                    passwd: $("#user_passwd").val()
+                    passwd: passwd
                 };
                 $.post("/api/user", post_data, function (result) {
                     $("#msg_box").text(result.msg);
