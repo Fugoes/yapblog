@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <script src="/static/jquery-3.2.1.min.js"></script>
+{% extends "test.html" %}
+{% block js %}
     <script>
         function do_login() {
             var post_data = {
@@ -30,13 +26,15 @@
             });
         });
     </script>
-</head>
-<body>
-<form id="login_form">
-    <p>Name: <input type="text" id="user_name"/></p>
-    <p>Password: <input type="password" id="user_password"></p>
-    <input type="submit" value="Login" id="login_button"/>
-</form>
-<div id="msg_box"></div>
-</body>
+{% endblock %}
+
+{% block content %}
+    <form id="login_form">
+        <p>Name: <input type="text" id="user_name"/></p>
+        <p>Password: <input type="password" id="user_password"></p>
+        <input type="submit" value="Login" id="login_button"/>
+    </form>
+    <div id="msg_box"></div>
+{% endblock %}
+
 </html>
