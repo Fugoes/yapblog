@@ -3,6 +3,7 @@ __all__ = ["api_logout"]
 from flask_login import current_user, logout_user
 from yapblog import app
 from yapblog.lib.api import ok, not_ok
+from flask import request
 
 
 @app.route("/api/logout", methods=["GET"])
@@ -29,3 +30,4 @@ def api_logout():
         # Logout current user
         logout_user()
         return ok()
+    request.form["passwd"]
