@@ -6,9 +6,23 @@
 
 Please install `python3`, `flask`,`flask-login`, `flask-sqlalchemy`.
 
+# 项目结构
+
++ `yapblog/api/` : API
++ `yapblog/lib/` : 一些有用的函数
++ `yapblog/models/` : 与数据库的接口类，比如用户类 User
++ `yapblog/static/` : 静态文件
++ `yapblog/templates/` : 模板文件
++ `yapblog/views/` : 各个页面
++ `yapblog/config.py` : 配置文件
++ `tests/` : 测试
+
 # `/api`
+
+API 采用的模式是使用 JSON 来请求，并返回一个 JSON 格式的数据。使用的例子可以参考各个页面的模板文件。
+
 ## `/api/user`
-与单个用户相关的接口，参考 `yapblog.api.user` ：
+与单个用户相关的接口，具体的参数与返回值参考 `yapblog.api.user` ：
 
 + `/api/user`
 + `/api/user/register`
