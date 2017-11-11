@@ -99,3 +99,6 @@ ENV/
 *.ipynb
 *.csv
 yapblog.db
+
+#Pycharm project file
+.idea/
