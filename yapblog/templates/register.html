@@ -13,13 +13,18 @@
                     email: $("#user_email").val(),
                     passwd: passwd
                 };
-                $.post("/api/user", post_data, function (result) {
-                    $("#msg_box").text(result.msg);
+                $.post("/api/user/register", post_data, function (result) {
+                    if (result.ok) {
+                        $("#msg_box").text("Successfully registered!");
+                    } else {
+                        $("#msg_box").text(result.msg);
+                    }
                 }, "json");
             } else {
                 $("#msg_box").text("Unmatched password and confirm password.");
             }
         }
+
         $(function () {
             $("#register_form").on("submit", function (ev) {
                 $("#reg_button").prop("disabled", true);

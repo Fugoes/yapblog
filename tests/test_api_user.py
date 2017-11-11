@@ -1,13 +1,12 @@
 import requests
 import yapblog.config as config
 
-url = "http://%s:%d/api/user" % (config.HOST, config.PORT)
+url = "http://%s:%d/api/user/register" % (config.HOST, config.PORT)
 
-r = requests.post(url, data={"name": "test", "email": "test@example.com", "passwd": "test"})
-print(r.content.decode())
-for i in range(1000):
+for i in range(10):
     r = requests.post(url, data={
         "name": "test%d" % i,
         "email": "test%d@example.com" % i,
         "passwd": "test"
     })
+    print(r.content.decode())

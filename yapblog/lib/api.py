@@ -1,5 +1,5 @@
 """
-yapb.lib.api
+yapblog.lib.api
 
 Library for creating json api.
 """
@@ -7,11 +7,11 @@ Library for creating json api.
 from flask import jsonify
 
 
-def ok(msg=None):
-    result = {"ok": True, "msg": msg}
-    return jsonify(result)
+def ok(**kwargs):
+    kwargs["ok"] = True
+    return jsonify(kwargs)
 
 
-def not_ok(msg=None):
-    result = {"ok": False, "msg": msg}
-    return jsonify(result)
+def not_ok(**kwargs):
+    kwargs["ok"] = False
+    return jsonify(kwargs)
