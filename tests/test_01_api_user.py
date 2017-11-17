@@ -1,4 +1,5 @@
 import requests
+import json
 import yapblog.config as config
 
 url = "http://%s:%d/api/user/register" % (config.HOST, config.PORT)
@@ -9,4 +10,6 @@ for i in range(5):
         "email": "test%d@example.com" % i,
         "passwd": "test"
     })
-    print(r.content.decode())
+    result = json.loads(r.content.decode())
+    print(result)
+    assert result["ok"]
