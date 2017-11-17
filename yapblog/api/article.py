@@ -1,13 +1,11 @@
 __all__ = ["api_article_new"]
 
-import re
 import datetime
 from flask import request
 from yapblog import app
 from yapblog.models import Article
 from yapblog.lib.api import ok, not_ok
-
-date_regx = re.compile("([\d]{4})-(\d{1,2})-(\d{1,2})")
+import yapblog.lib.regex as regex
 
 
 @app.route("/api/article/<int:article_id>", methods=["GET"])
@@ -104,7 +102,7 @@ def api_article_new():
     """
     data = request.get_json()
     try:
-        date = datetime.date(*tuple(map(int, date_regx.fullmatch(data["date"]).groups())))
+        date = datetime.date(*tuple(map(int, regex.date.fullmatch(data["date"]).groups())))
     except AttributeError:
         return not_ok()
     try:
