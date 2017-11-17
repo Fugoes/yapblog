@@ -1,3 +1,5 @@
+__all__ = ["User"]
+
 from sqlalchemy.exc import IntegrityError
 from hashlib import md5
 from yapblog import db
@@ -9,19 +11,20 @@ def md5_with_salt(passwd):
 
 
 class User(db.Model):
-    uid = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120), unique=True)
-    passwd_hash = db.Column(db.String(32))
+    __tablename__ = "user"
+    id_ = db.Column("id", db.Integer, primary_key=True)
+    name_ = db.Column("name", db.String(80), unique=True)
+    email_ = db.Column("email", db.String(120), unique=True)
+    passwd_hash_ = db.Column("passwd_hash", db.String(32))
 
     def __init__(self, name, email, passwd):
-        self.name = name
-        self.email = email
-        self.passwd_hash = md5_with_salt(passwd)
-        self.uid = None
+        self.name_ = name
+        self.email_ = email
+        self.passwd_hash_ = md5_with_salt(passwd)
+        self.id_ = None
 
     def to_dict(self):
-        return {"name": self.name, "email": self.email}
+        return {"name": self.name_, "email": self.email_}
 
     @property
     def is_active(self):
@@ -31,7 +34,7 @@ class User(db.Model):
     @property
     def is_authenticated(self):
         """ Require by flask_login """
-        return self.uid is not None
+        return self.id_ is not None
 
     @property
     def is_anonymous(self):
@@ -40,13 +43,13 @@ class User(db.Model):
 
     def get_id(self):
         """ Require by flask_login """
-        return str(self.uid)
+        return str(self.id_)
 
     def __repr__(self):
-        return "<User %s>" % self.name
+        return "<User %s>" % self.name_
 
     def __str__(self):
-        return "<User %s>" % self.name
+        return "<User %s>" % self.name_
 
     @staticmethod
     def get_user(**kwargs):

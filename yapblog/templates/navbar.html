@@ -1,0 +1,16 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">{{ navbar.title }}</a>
+        </div>
+        <ul class="nav navbar-nav">
+            {% for item in navbar.items %}
+                {% if item.is_active %}
+                    <li class="active"><a href="{{ item.link }}">{{ item.text }}</a></li>
+                {% else %}
+                    <li><a href="{{ item.link }}">{{ item.text }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</nav>
