@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <script src="/static/jquery-3.2.1.min.js"></script>
+{% extends "test.html" %}
+{% block title %}Login{% endblock %}
+{% block js %}
     <script>
         function do_login() {
             var post_data = {
                 name: $("#user_name").val(),
-                passwd: $("#user_password").val()
+                passwd: $("#user_passwd").val()
             };
 
             $.post("/api/user/login", post_data, function (result) {
                 var msg_box = $("#msg_box");
-                if (result.ok === true) {
+                if (result.ok) {
                     msg_box.text(result.uid);
                 } else {
                     msg_box.text(result.msg);
@@ -23,20 +20,33 @@
 
         $(function () {
             $("#login_form").on("submit", function (ev) {
-                $("#login_button").prop("disabled", true);
+                var button = $("#login_button");
+                button.prop("disabled", true);
                 ev.preventDefault();
                 do_login();
-                $("#login_button").prop("disabled", false);
+                button.prop("disabled", false);
             });
         });
     </script>
-</head>
-<body>
-<form id="login_form">
-    <p>Name: <input type="text" id="user_name"/></p>
-    <p>Password: <input type="password" id="user_password"></p>
-    <input type="submit" value="Login" id="login_button"/>
-</form>
-<div id="msg_box"></div>
-</body>
-</html>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <form id="login_form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input class="form-control" id="user_name">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="user_passwd">
+                </div>
+                <button type="submit" class="btn btn-default" id="login_button">Submit</button>
+            </form>
+            <div id="msg_box"></div>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+{% endblock %}
