@@ -1,3 +1,4 @@
+import json
 import requests
 import yapblog.config as config
 
@@ -8,10 +9,16 @@ r = requests.post(url + "/new", json={
     "date": "2017-1-1",
     "html_content": "<h1>Hello World!</h1>"
 })
-print(r.content.decode())
+result = json.loads(r.content.decode())
+print(result)
+assert result["ok"]
 
 r = requests.get(url + "/1")
-print(r.content.decode())
+result = json.loads(r.content.decode())
+print(result)
+assert result["ok"]
 
 r = requests.get(url + "/2")
-print(r.content.decode())
+result = json.loads(r.content.decode())
+print(result)
+assert not result["ok"]
