@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="/static/jquery-3.2.1.min.js"></script>
+    <script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    {% block js %}
+    {% endblock %}
+</head>
+<body>
+
+{% if navbar %}
+    {% include "navbar.html" %}
+{% endif %}
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>
