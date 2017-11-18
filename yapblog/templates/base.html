@@ -15,8 +15,25 @@
     {% include "navbar.html" %}
 {% endif %}
 
+{% if sidebar %}
+    <div class="container">
+    <div class="row">
+    <div class="col-sm-3" id="sidebar">
+        {% for sidebar_item in sidebar.items %}
+            {% include sidebar_item.template %}
+        {% endfor %}
+    </div>
+    <div class="col-sm-9" id="content">
+{% else %}
+    <div class="container">
+    <div class="col-sm-12" id="content">
+{% endif %}
+
 {% block content %}
 {% endblock %}
+
+</div>
+</div>
 
 </body>
 </html>

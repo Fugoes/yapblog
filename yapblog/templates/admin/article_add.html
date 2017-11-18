@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Admin|Article{% endblock %}
+{% block js %}
+    <script>
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var today = yyyy + "-" + mm + "-" + dd;
+
+        $(function () {
+            $("#article_date").val(today);
+            $("#article_form").on("submit", function (ev) {
+                var button = $("#button");
+                button.prop("disable", true);
+                ev.preventDefault();
+
+                var title = $("#article_title").val();
+                var date = $("#article_date").val();
+                var html_content = $("#article_html_content").val();
+
+                var data = {
+                    title: title,
+                    date: date,
+                    html_content: html_content
+                };
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/api/article/new",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        button.prop("disable", false);
+                    }
+                });
+            })
+        })
+    </script>
+{% endblock %}
+{% block content %}
+    <h1>Add Article</h1>
+    <form id="article_form">
+        <div class="form-group">
+            <label>Title:</label>
+            <input class="form-control" id="article_title">
+        </div>
+        <div class="form-group">
+            <label>Date:</label>
+            <input class="form-control" id="article_date">
+        </div>
+        <div class="form-group">
+            <label>Content:</label>
+            <textarea class="form-control" rows="10" id="article_html_content"></textarea>
+        </div>
+        <button type="submit" class="btn btn-info" id="button">Add</button>
+    </form>
+{% endblock %}

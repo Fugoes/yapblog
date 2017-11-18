@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Admin|Article{% endblock %}
+{% block js %}
+    <script>
+        var articles_info = $.getJSON("/api/article");
+
+        $(function () {
+            articles_info.done(function (data) {
+                var body = $("#body");
+                if (data.ok) {
+                    $.each(data.articles, function (index, article) {
+                        body.append([
+                            "<tr>",
+                            "   <td>" + article.id + "</td>",
+                            "   <td>" + article.title + "</td>",
+                            "   <td>" + article.date + "</td>",
+                            "   <td>",
+                            "       <a href=\"/admin/article/" + article.id + "\">Edit</a>",
+                            "       <a href=\"/admin/article/" + article.id + "\">Delete</a>",
+                            "   </td>",
+                            "</tr>"
+                        ].join("\n"));
+                    })
+                }
+            });
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1>Articles</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="body">
+        </tbody>
+    </table>
+{% endblock %}
