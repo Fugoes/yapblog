@@ -1,15 +1,13 @@
-__all__ = ["api_article_new"]
-
 import datetime
 from flask import request
-from yapblog import app
+from yapblog import app, db
 from yapblog.models import Article
 from yapblog.lib.api import ok, not_ok
 import yapblog.lib.regex as regex
 
 
 @app.route("/api/article/<int:article_id>", methods=["GET"])
-def api_article_article_id(article_id):
+def api_article_article_id_get(article_id):
     """
     Get article with id of article_id.
 
@@ -37,6 +35,28 @@ def api_article_article_id(article_id):
               date="%04d-%02d-%02d" % (date.year, date.month, date.day),
               html_content=article.html_content_,
               page_id=article.page_id_)
+
+
+@app.route("/api/article/<int:article_id>", methods=["DELETE"])
+def api_article_article_id_delete(article_id):
+    """
+    Delete the article with id of article_id.
+
+    Method: DELETE
+
+    :return:
+    Error:
+    {
+        "ok": False
+    }
+    Success:
+    {
+        "ok": True
+    }
+    """
+    Article.query.filter_by(id_=article_id).delete()
+    db.session.commit()
+    return ok()
 
 
 @app.route("/api/article", methods=["GET"])
