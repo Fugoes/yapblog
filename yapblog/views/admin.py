@@ -56,3 +56,11 @@ def admin_article():
     return render_template("admin/article.html",
                            navbar=navbar,
                            sidebar=sidebar)
+
+
+@app.route("/admin/article/<int:article_id>", methods=["GET"])
+def admin_article_article_id(article_id):
+    return render_template("admin/article_id.html",
+                           article_id=article_id,
+                           navbar=navbar,
+                           sidebar=sidebar)

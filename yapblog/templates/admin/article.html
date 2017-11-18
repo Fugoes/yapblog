@@ -4,9 +4,22 @@
     <script>
         var articles_info = $.getJSON("/api/article");
 
-        $(function () {
-            articles_info.done(function (data) {
-                var body = $("#body");
+        function delete_article(id) {
+            $.ajax({
+                type: "DELETE",
+                url: "/api/article/" + id,
+                success: function (data) {
+                    console.log(data);
+                    refresh($.getJSON("/api/article"));
+                }
+            })
+        }
+
+        function refresh(p) {
+            var body = $("#body");
+            body.html("");
+            p.done(function (data) {
+                console.log(data);
                 if (data.ok) {
                     $.each(data.articles, function (index, article) {
                         body.append([
@@ -16,13 +29,17 @@
                             "   <td>" + article.date + "</td>",
                             "   <td>",
                             "       <a href=\"/admin/article/" + article.id + "\">Edit</a>",
-                            "       <a href=\"/admin/article/" + article.id + "\">Delete</a>",
+                            "       <a href=\"#\" onclick=\"delete_article(" + article.id + ")\">Delete</a>",
                             "   </td>",
                             "</tr>"
                         ].join("\n"));
                     })
                 }
-            });
+            })
+        }
+
+        $(function () {
+            refresh(articles_info);
         })
     </script>
 {% endblock %}
@@ -35,7 +52,7 @@
             <th>Id</th>
             <th>Title</th>
             <th>Date</th>
-            <th>Actions</th>
+            <th>Operations</th>
         </tr>
         </thead>
         <tbody id="body">
