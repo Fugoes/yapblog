@@ -60,7 +60,8 @@ def api_article():
         [
             {
                 "id": <id of article>,
-                "title": <title of article>
+                "title": <title of article>,
+                "date": <date string of article>
             },
         ]
     }
@@ -69,7 +70,8 @@ def api_article():
     return ok(articles=[
         {
             "id": article.id_,
-            "title": article.title_
+            "title": article.title_,
+            "date": "%04d-%02d-%02d" % (article.date_.year, article.date_.month, article.date_.day)
         }
         for article in articles])
 

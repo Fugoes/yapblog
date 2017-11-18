@@ -31,6 +31,7 @@ class Article(db.Model):
         try:
             db.session.commit()
         except IntegrityError:
+            db.session.rollback()
             return None
         return new_article
 
