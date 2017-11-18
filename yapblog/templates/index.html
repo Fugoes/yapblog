@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block js %}
+    <script>
+        $(function () {
+            $.getJSON("/api/article", function (result) {
+                var content = $("#content");
+                if (result.ok) {
+                    $.each(result.articles, function (index, item) {
+                        content.append('<div class="row">' + item.title + '</div>');
+                    });
+                } else {
+                    content.html("Hello World");
+                }
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
