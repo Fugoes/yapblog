@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Admin|User{% endblock %}
+{% block js %}
+    <script>
+        api_url = "/api/user";
+        info = $.getJSON(api_url);
+        button = $("#refresh_btn");
+
+        function delete_item(id) {
+            $.ajax({
+                type: "DELETE",
+                url: "/api/user/" + id,
+                success: function (data) {
+                    if (data.ok) {
+                        $("#td" + id).html("Deleted");
+                    }
+                }
+            })
+        }
+
+        function refresh(p) {
+            var body = $("#body");
+            body.html("");
+            p.done(function (data) {
+                if (data.ok) {
+                    $.each(data.users, function (index, user) {
+                        body.append([
+                            "<tr>",
+                            "   <td>" + user.id + "</td>",
+                            "   <td>" + user.name + "</td>",
+                            "   <td>" + user.email + "</td>",
+                            "   <td id=\"td" + user.id + "\">",
+                            "       <a href=\"/admin/user/" + user.id + "\">Edit</a>",
+                            "       <a href=\"#\" onclick=\"delete_item(" + user.id + ")\">Delete</a>",
+                            "   </td>",
+                            "</tr>"
+                        ].join("\n"));
+                    })
+                }
+            })
+        }
+
+        function refresh_btn() {
+            button.prop("disabled", true);
+            var p = $.getJSON(api_url);
+            refresh(p);
+            p.done(function (data) {
+                button.prop("disabled", false);
+            })
+        }
+
+        $(function () {
+            button.prop("disabled", true);
+            refresh(info);
+            info.done(function (data) {
+                button.prop("disabled", false);
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1>Users</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Operations</th>
+        </tr>
+        </thead>
+        <tbody id="body">
+        </tbody>
+    </table>
+    <button id="refresh_btn" class="btn btn-default" onclick="refresh_btn()">Refresh</button>
+{% endblock %}
