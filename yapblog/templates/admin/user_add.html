@@ -8,6 +8,10 @@
                 button.prop("disable", true);
                 ev.preventDefault();
 
+                var msg_box = $("#msg_box");
+                msg_box.attr("class", "alert alert-info fade in");
+                msg_box.html("<strong>Loading...</strong>");
+
                 var name = $("#user_name").val();
                 var email = $("#user_email").val();
                 var passwd = $("#user_passwd").val();
@@ -29,6 +33,12 @@
                     success: function (data) {
                         console.log(data);
                         button.prop("disable", false);
+                        msg_box.attr("class", "alert alert-success fade in");
+                        msg_box.html("<strong>Success!</strong>");
+                        setTimeout(function () {
+                            msg_box.empty();
+                            msg_box.removeAttr("class");
+                        }, 2000);
                     }
                 });
             })
@@ -50,6 +60,7 @@
             <label>Password:</label>
             <input class="form-control" id="user_passwd">
         </div>
+        <div id="msg_box"></div>
         <button type="submit" class="btn btn-info" id="button">Add</button>
     </form>
 {% endblock %}
