@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Admin|Article{% endblock %}
+{% block js %}
+    <script>
+        article = $.getJSON("/api/article/{{ article_id }}");
+
+        $(function () {
+            article.done(function (data) {
+                if (data.ok) {
+                    $("#article_title").val(data.title);
+                    $("#article_date").val(data.date);
+                    $("#article_html_content").val(data.html_content);
+                }
+            });
+        })
+    </script>
+{% endblock %}
+{% block content %}
+    <h1>Edit Article</h1>
+    <form id="article_form">
+        <div class="form-group">
+            <label>Title:</label>
+            <input class="form-control" id="article_title">
+        </div>
+        <div class="form-group">
+            <label>Date:</label>
+            <input class="form-control" id="article_date">
+        </div>
+        <div class="form-group">
+            <label>Content:</label>
+            <textarea class="form-control" rows="10" id="article_html_content"></textarea>
+        </div>
+    </form>
+{% endblock %}

@@ -1,16 +1,19 @@
 {% extends "base.html" %}
-{% block title %}Admin|Article{% endblock %}
+{% block title %}Admin|User{% endblock %}
 {% block js %}
     <script>
-        articles_info = $.getJSON("/api/article");
+        api_url = "/api/user";
+        info = $.getJSON(api_url);
         button = $("#refresh_btn");
 
-        function delete_article(id) {
+        function delete_item(id) {
             $.ajax({
                 type: "DELETE",
-                url: "/api/article/" + id,
+                url: "/api/user/" + id,
                 success: function (data) {
-                    $("#td" + id).html("Deleted");
+                    if (data.ok) {
+                        $("#td" + id).html("Deleted");
+                    }
                 }
             })
         }
@@ -20,15 +23,15 @@
             body.html("");
             p.done(function (data) {
                 if (data.ok) {
-                    $.each(data.articles, function (index, article) {
+                    $.each(data.users, function (index, user) {
                         body.append([
                             "<tr>",
-                            "   <td>" + article.id + "</td>",
-                            "   <td>" + article.title + "</td>",
-                            "   <td>" + article.date + "</td>",
-                            "   <td id=\"td" + article.id + "\">",
-                            "       <a href=\"/admin/article/" + article.id + "\">Edit</a>",
-                            "       <a href=\"#\" onclick=\"delete_article(" + article.id + ")\">Delete</a>",
+                            "   <td>" + user.id + "</td>",
+                            "   <td>" + user.name + "</td>",
+                            "   <td>" + user.email + "</td>",
+                            "   <td id=\"td" + user.id + "\">",
+                            "       <a href=\"/admin/user/" + user.id + "\">Edit</a>",
+                            "       <a href=\"#\" onclick=\"delete_item(" + user.id + ")\">Delete</a>",
                             "   </td>",
                             "</tr>"
                         ].join("\n"));
@@ -39,7 +42,7 @@
 
         function refresh_btn() {
             button.prop("disabled", true);
-            var p = $.getJSON("/api/article");
+            var p = $.getJSON(api_url);
             refresh(p);
             p.done(function (data) {
                 button.prop("disabled", false);
@@ -48,8 +51,8 @@
 
         $(function () {
             button.prop("disabled", true);
-            refresh(articles_info);
-            articles_info.done(function (data) {
+            refresh(info);
+            info.done(function (data) {
                 button.prop("disabled", false);
             })
         })
@@ -57,13 +60,13 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Articles</h1>
+    <h1>Users</h1>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Title</th>
-            <th>Date</th>
+            <th>Name</th>
+            <th>Email</th>
             <th>Operations</th>
         </tr>
         </thead>
