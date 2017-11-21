@@ -5,16 +5,16 @@ from yapblog import db
 
 
 class Article(db.Model):
-    __tablename__ = "article"
+    __tablename__ = "articles"
     # Primary key
-    id_ = db.Column("id", db.Integer, primary_key=True)
+    id_ = db.Column("id", db.Integer, db.Sequence("id_seq"), primary_key=True)
     # Properties
     title_ = db.Column("title", db.String(1024), nullable=False, unique=True)
     date_ = db.Column("date", db.Date, nullable=False)
     html_content_ = db.Column("html_content", db.Text, nullable=False)
     # One to One
     page_id_ = db.Column(
-        "page_id", db.Integer, db.ForeignKey("page.id"),
+        "page_id", db.Integer, db.ForeignKey("pages.id"),
         nullable=False)
 
     def __init__(self, title, date, html_content, page_id):
@@ -37,9 +37,9 @@ class Article(db.Model):
 
 
 class Page(db.Model):
-    __tablename__ = "page"
+    __tablename__ = "pages"
     # Primary key
-    id_ = db.Column("id", db.Integer, primary_key=True)
+    id_ = db.Column("id", db.Integer, db.Sequence("id_seq"), primary_key=True)
     comments_ = db.relationship("Comment",
                                 backref="page", lazy=True)
 
@@ -55,12 +55,12 @@ class Page(db.Model):
 
 
 class Comment(db.Model):
-    __tablename__ = "comment"
+    __tablename__ = "comments"
     # Primary key
-    id_ = db.Column("id", db.Integer, primary_key=True)
+    id_ = db.Column("id", db.Integer, db.Sequence("id_seq"), primary_key=True)
     # Properties
     text_ = db.Column("text", db.Text, nullable=False)
     # One to One
-    reply_to_id_ = db.Column("reply_to_id", db.ForeignKey("comment.id"), nullable=True)
+    reply_to_id_ = db.Column("reply_to_id", db.ForeignKey("comments.id"), nullable=True)
     # Many to One
-    page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("page.id"), nullable=True)
+    page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=True)
