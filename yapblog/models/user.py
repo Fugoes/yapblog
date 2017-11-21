@@ -11,8 +11,8 @@ def md5_with_salt(passwd):
 
 
 class User(db.Model):
-    __tablename__ = "user"
-    id_ = db.Column("id", db.Integer, primary_key=True)
+    __tablename__ = "users"
+    id_ = db.Column("id", db.Integer, db.Sequence("id_seq"), primary_key=True)
     name_ = db.Column("name", db.String(80), unique=True)
     email_ = db.Column("email", db.String(120), unique=True)
     passwd_hash_ = db.Column("passwd_hash", db.String(32))
