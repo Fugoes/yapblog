@@ -21,6 +21,10 @@
                 button.prop("disable", true);
                 ev.preventDefault();
 
+                var msg_box = $("#msg_box");
+                msg_box.attr("class", "alert alert-info fade in");
+                msg_box.html("<strong>Loading...</strong>");
+
                 var title = $("#article_title").val();
                 var date = $("#article_date").val();
                 var html_content = $("#article_html_content").val();
@@ -40,6 +44,12 @@
                     success: function (data) {
                         console.log(data);
                         button.prop("disable", false);
+                        msg_box.attr("class", "alert alert-success fade in");
+                        msg_box.html("<strong>Success!</strong>");
+                        setTimeout(function () {
+                            msg_box.empty();
+                            msg_box.removeAttr("class");
+                        }, 2000);
                     }
                 });
             })
@@ -61,6 +71,7 @@
             <label>Content:</label>
             <textarea class="form-control" rows="10" id="article_html_content"></textarea>
         </div>
+        <div id="msg_box"></div>
         <button type="submit" class="btn btn-info" id="button">Add</button>
     </form>
 {% endblock %}

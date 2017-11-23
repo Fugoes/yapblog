@@ -14,6 +14,11 @@ for i in range(5):
     print(result)
     assert result["ok"]
 
+r = requests.get(url)
+result = json.loads(r.content.decode())
+print(result)
+assert result["ok"]
+
 r = requests.get(url + "/1")
 result = json.loads(r.content.decode())
 print(result)

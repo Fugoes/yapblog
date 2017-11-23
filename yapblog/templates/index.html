@@ -4,10 +4,18 @@
     <script>
         $(function () {
             $.getJSON("/api/article", function (result) {
-                var content = $("#content");
+                var content = $("#post-list");
                 if (result.ok) {
                     $.each(result.articles, function (index, item) {
-                        content.append('<div class="row">' + item.title + '</div>');
+                        var link = encodeURI("/" + item.date.slice(0, 4) + "/" + item.date.slice(5, 7) + "/" + item.title);
+                        content.append([
+                            "<li>",
+                            "   <span class=\"post-meta\">" + item.date + "</span>",
+                            "   <h3 class=\"post-title\">",
+                            "       <a href=\"" + link + "\">" + item.title + "</a>",
+                            "   </h3>",
+                            "</li>"
+                        ].join("\n"));
                     });
                 } else {
                     content.html("Hello World");
@@ -18,4 +26,6 @@
 {% endblock %}
 
 {% block content %}
+    <ul class="post-list" id="post-list">
+    </ul>
 {% endblock %}

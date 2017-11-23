@@ -1,0 +1,30 @@
+.tag-container {
+    margin: 10px;
+}
+
+.tag-item {
+    margin: 4px;
+}
+
+.post-meta {
+    font-size: 14px;
+    color: #828282;
+    margin: 0;
+}
+
+.post-link {
+    display: block;
+    font-size: 24px;
+    margin: 0;
+}
+
+.post-list {
+    margin-left: 0;
+    list-style: none;
+}
+
+.post-title {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    list-style: none;
+}
