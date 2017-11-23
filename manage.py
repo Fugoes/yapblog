@@ -1,23 +1,28 @@
 #!/usr/bin/env python3
 
 from sys import argv
+from sqlalchemy import *
+from yapblog import config
 
 
-def help():
-    print("manage.py create-database")
+def print_help():
+    print("manage.py create-tables")
+    print("          drop-tables")
     print("          help")
 
 
 if len(argv) == 2:
-    if argv[1] == "create-database":
+    if argv[1] == "create-tables":
         from yapblog import db
         from yapblog.models import *
-
         db.create_all()
-
+    elif argv[1] == "drop-tables":
+        from yapblog import db
+        from yapblog.models import *
+        db.drop_all()
     elif argv[1] == "help":
-        help()
+        print_help()
     else:
-        help()
+        print_help()
 else:
-    help()
+    print_help()
