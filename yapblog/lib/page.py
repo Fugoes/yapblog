@@ -23,5 +23,16 @@ class SideBar(object):
             self.items = kwargs["items"]
             self.template = "element/collapsible_list.html"
 
+    class TagList(object):
+        class Item(object):
+            def __init__(self, **kwargs):
+                self.link = kwargs["link"]
+                self.text = kwargs["text"]
+
+        def __init__(self, **kwargs):
+            self.title = kwargs["title"]
+            self.items = kwargs["items"]
+            self.template = "element/tag_list.html"
+
     def __init__(self, **kwargs):
         self.items = kwargs["items"]
