@@ -1,0 +1,16 @@
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                {{ sidebar_item.title }}
+            </h4>
+        </div>
+        <div class="panel">
+            <div class="tag-container">
+                {% for item in sidebar_item.items %}
+                    <a class="btn btn-xs btn-primary tag-item" href="{{ item.link }}">{{ item.text }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
