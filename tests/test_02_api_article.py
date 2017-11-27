@@ -63,4 +63,4 @@ assert result["ok"]
 r = requests.get(url + "/2")
 result = json.loads(r.content.decode())
 print(result)
-assert not result["ok"]
+assert result["ok"]
