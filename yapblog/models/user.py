@@ -1,18 +1,13 @@
 __all__ = ["User"]
 
 from sqlalchemy.exc import IntegrityError
-from hashlib import md5
 from yapblog import db
-import yapblog.config as config
-
-
-def md5_with_salt(passwd):
-    return md5((passwd + config.PASSWD_HASH_SALT).encode()).hexdigest()
+from yapblog.lib.auth import md5_with_salt
 
 
 class User(db.Model):
     __tablename__ = "users"
-    id_ = db.Column("id", db.Integer, db.Sequence("id_seq"), primary_key=True)
+    id_ = db.Column("id", db.Integer, db.Sequence("user_id_seq"), primary_key=True)
     name_ = db.Column("name", db.String(80), unique=True)
     email_ = db.Column("email", db.String(120), unique=True)
     passwd_hash_ = db.Column("passwd_hash", db.String(32))

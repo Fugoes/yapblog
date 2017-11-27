@@ -6,6 +6,7 @@ from sys import argv
 def print_help():
     print("manage.py create-tables")
     print("          drop-tables")
+    print("          database-shell")
     print("          help")
 
 
@@ -20,6 +21,12 @@ if len(argv) == 2:
         from yapblog.models import *
 
         db.drop_all()
+    elif argv[1] == "database-shell":
+        from yapblog import db
+        from yapblog.models import *
+        from IPython import embed
+
+        embed()
     elif argv[1] == "help":
         print_help()
     else:
