@@ -1,3 +1,7 @@
+"""
+Database interface
+"""
+
 __all__ = ["Tag", "Page", "Article", "Comment", "User"]
 
 from yapblog import db
@@ -18,15 +22,28 @@ class Tag(db.Model):
     def __init__(self, name):
         self.name_ = name
 
+    def __str__(self):
+        return "<Tag id=%d name='%s'>" % (self.id_, self.name_)
+
+    def __repr__(self):
+        return self.__str__()
+
 
 class Page(db.Model):
     __tablename__ = "pages"
     # Attribute
     id_ = db.Column("id", db.Integer, db.Sequence("page_id_seq"), primary_key=True)
-    comments_ = db.relationship("Comment", back_populates="page", uselist=True)
+    # Relationship
+    comments = db.relationship("Comment", back_populates="page", uselist=True)
 
     def __init__(self):
         return
+
+    def __str__(self):
+        return "<Page id=%d>" % self.id_
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Article(db.Model):
@@ -37,7 +54,7 @@ class Article(db.Model):
     date_time_ = db.Column("date_time", db.DateTime)
     html_content_ = db.Column("html_content", db.Text)
     # Foreign key
-    page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=False)
+    page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=True)
     # Relationship
     page = db.relationship("Page", uselist=False)
     tags = db.relationship("Tag", secondary=tag_and_article, back_populates="articles")
@@ -46,6 +63,12 @@ class Article(db.Model):
         self.title_ = title
         self.date_time_ = date_time
         self.html_content_ = html_content
+
+    def __str__(self):
+        return "<Article id=%d title='%s'>" % (self.id_, self.title_)
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Comment(db.Model):
@@ -59,10 +82,16 @@ class Comment(db.Model):
     # Relationship
     replies = db.relationship("Comment", uselist=True)
     reply_to = db.relationship("Comment", remote_side=id_, uselist=False)
-    page_ = db.relationship("Page", back_populates="comments", uselist=False)
+    page = db.relationship("Page", back_populates="comments", uselist=False)
 
     def __init__(self, text):
         self.text_ = text
+
+    def __str__(self):
+        return "<Comment id=%d text='%s'>" % (self.id_, self.text_)
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class User(db.Model):
@@ -97,3 +126,9 @@ class User(db.Model):
     def get_id(self):
         """ Require by flask_login """
         return str(self.id_)
+
+    def __str__(self):
+        return "<User id=%d name='%s'>" % (self.id_, self.name_)
+
+    def __repr__(self):
+        return self.__str__()
