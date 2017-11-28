@@ -5,7 +5,7 @@ import yapblog.config as config
 url = "http://%s:%d/api/user" % (config.HOST, config.PORT)
 
 for i in range(5):
-    r = requests.post(url + "/register", data={
+    r = requests.post(url, json={
         "name": "test%d" % i,
         "email": "test%d@example.com" % i,
         "passwd": "test"

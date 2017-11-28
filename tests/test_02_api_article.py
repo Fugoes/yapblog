@@ -37,18 +37,18 @@ content = """
 </table> 
 """
 
-r = requests.post(url + "/new", json={
+r = requests.post(url, json={
     "title": "Hello World",
-    "date": "2017-1-1",
+    "date_time": "2017-1-1",
     "html_content": content,
 })
 result = json.loads(r.content.decode())
 print(result)
 assert result["ok"]
 
-r = requests.post(url + "/new", json={
+r = requests.post(url, json={
     "title": "Hello World Again",
-    "date": "2017-1-19",
+    "date_time": "2017-1-19",
     "html_content": content,
 })
 result = json.loads(r.content.decode())
@@ -63,4 +63,4 @@ assert result["ok"]
 r = requests.get(url + "/2")
 result = json.loads(r.content.decode())
 print(result)
-assert not result["ok"]
+assert result["ok"]
