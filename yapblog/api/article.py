@@ -9,7 +9,7 @@ import datetime
 from flask import request
 from sqlalchemy.exc import IntegrityError
 from yapblog import app, db
-from yapblog.models import Article
+from yapblog.models import Article, Page
 from yapblog.lib.api import ok, not_ok
 import yapblog.lib.regex as regex
 
@@ -141,6 +141,7 @@ def api_article_post():
     except KeyError:
         return not_ok()
     new_article = Article(title, date_time, html_content)
+    new_article.page = Page()
     db.session.add(new_article)
     try:
         db.session.commit()

@@ -84,3 +84,12 @@ db.session.commit()
 print()
 print("The first comment and its replies")
 print("%s: %s" % (comments[0], comments[0].replies))
+
+c = Comment.query.filter_by(id_=comments[0].id_).first()
+db.session.delete(c)
+db.session.commit()
+
+print()
+print("All Articles and its comments:")
+for i in Article.query.all():
+    print("%s: %s" % (str(i), str(i.page.comments)))

@@ -79,10 +79,12 @@ class Comment(db.Model):
     # Foreign key
     reply_to_id_ = db.Column("reply_to_id", db.Integer, db.ForeignKey("comments.id"), nullable=True)
     page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=True)
+    user_id_ = db.Column("user_id", db.Integer, db.ForeignKey("users.id"), nullable=True)
     # Relationship
     replies = db.relationship("Comment", uselist=True)
     reply_to = db.relationship("Comment", remote_side=id_, uselist=False)
     page = db.relationship("Page", back_populates="comments", uselist=False)
+    user = db.relationship("User", back_populates="comments", uselist=False)
 
     def __init__(self, text):
         self.text_ = text
@@ -101,6 +103,8 @@ class User(db.Model):
     email_ = db.Column("email", db.String(100), unique=True)
     passwd_hash_ = db.Column("passwd_hash", db.String(32))
     is_admin_ = db.Column("is_admin", db.Boolean, nullable=False)
+    # Relationship
+    comments = db.relationship("Comment", back_populates="user", uselist=True)
 
     def __init__(self, name, email, passwd_hash, is_admin=False):
         self.name_ = name
