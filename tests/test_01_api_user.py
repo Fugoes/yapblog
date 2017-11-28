@@ -24,12 +24,12 @@ result = json.loads(r.content.decode())
 print(result)
 assert result["ok"]
 
-r = requests.delete(url + "/1")
+r = requests.delete(url + "/2")
 result = json.loads(r.content.decode())
 print(result)
 assert result["ok"]
 
-r = requests.get(url + "/1")
+r = requests.get(url + "/2")
 result = json.loads(r.content.decode())
 print(result)
 assert not result["ok"]
