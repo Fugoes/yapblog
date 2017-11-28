@@ -8,7 +8,7 @@
             article.done(function (data) {
                 if (data.ok) {
                     $("#article_title").val(data.title);
-                    $("#article_date").val(data.date);
+                    $("#article_date").val(data.date_time);
                     $("#article_html_content").val(data.html_content);
                 }
             });

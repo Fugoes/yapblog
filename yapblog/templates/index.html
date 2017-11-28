@@ -7,10 +7,10 @@
                 var content = $("#post-list");
                 if (result.ok) {
                     $.each(result.articles, function (index, item) {
-                        var link = encodeURI("/" + item.date.slice(0, 4) + "/" + item.date.slice(5, 7) + "/" + item.title);
+                        var link = encodeURI("/" + item.date_time.slice(0, 4) + "/" + item.date_time.slice(5, 7) + "/" + item.title);
                         content.append([
                             "<li>",
-                            "   <span class=\"post-meta\">" + item.date + "</span>",
+                            "   <span class=\"post-meta\">" + item.date_time + "</span>",
                             "   <h3 class=\"post-title\">",
                             "       <a href=\"" + link + "\">" + item.title + "</a>",
                             "   </h3>",

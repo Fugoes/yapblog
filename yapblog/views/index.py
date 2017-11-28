@@ -47,7 +47,7 @@ def index():
 def article_year_month_title(year, month, title):
     article = Article.query.filter_by(title_=title).first()
     if article is not None:
-        date = article.date_
+        date = article.date_time_
         if date.year == year and date.month == month:
             return render_template("article.html",
                                    title=title,
