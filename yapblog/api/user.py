@@ -2,9 +2,11 @@ __all__ = ["api_user", "api_user_register", "api_user_login", "api_user_logout"]
 
 from flask import request
 from flask_login import current_user, login_user, logout_user
+from sqlalchemy.exc import IntegrityError
 from yapblog import app, db
 from yapblog.models import User
 from yapblog.lib.api import ok, not_ok
+from yapblog.lib.auth import md5_with_salt
 
 
 @app.route("/api/user/me", methods=["GET"])
@@ -22,7 +24,7 @@ def api_user_me():
     If current user is not anonymous:
     {
         "ok": True,
-        "uid": <this user's id>,
+        "id": <this user's id>,
         "name": <this user's name>,
         "email": <this user's email>
     }
@@ -30,9 +32,9 @@ def api_user_me():
     if current_user.is_anonymous:
         return not_ok()
     else:
-        return ok(uid=current_user.uid,
-                  name=current_user.name,
-                  email=current_user.email)
+        return ok(uid=current_user.id_,
+                  name=current_user.name_,
+                  email=current_user.email_)
 
 
 @app.route("/api/user/new", methods=["POST"])
@@ -42,7 +44,7 @@ def api_user_new():
 
     Method: POST
 
-    Parameter: name, email, passwd
+    Parameter: name, email, passwd, is_admin
 
     :return:
     If the parameters is not valid:
@@ -51,7 +53,8 @@ def api_user_new():
     }
     If success:
     {
-        "ok": True
+        "ok": True,
+        "id": <user's id>
     }
     """
     data = request.get_json()
@@ -59,15 +62,16 @@ def api_user_new():
         name = data["name"]
         email = data["email"]
         passwd = data["passwd"]
+        is_admin = data["is_admin"]
     except KeyError:
         return not_ok()
-    new_user = User.register_user(name=name,
-                                  email=email,
-                                  passwd=passwd)
-    if new_user:
-        return ok()
-    else:
+    new_user = User(name, email, md5_with_salt(passwd), is_admin)
+    db.session.add(new_user)
+    try:
+        db.session.commit()
+    except IntegrityError:
         return not_ok()
+    return ok(id=new_user.id_)
 
 
 @app.route("/api/user/register", methods=["POST"])
@@ -89,24 +93,30 @@ def api_user_register():
         If the parameters is not valid:
         {
             "ok": False,
-            "msg": "invalid parameters"
         }
         If success:
         {
-            "ok": True
+            "ok": True,
+            "id": <user's id>
         }
     """
     if not current_user.is_anonymous:
         return not_ok(msg="not anonymous")
     else:
-        form = request.form
-        new_user = User.register_user(name=form["name"],
-                                      email=form["email"],
-                                      passwd=form["passwd"])
-        if new_user:
-            return ok()
-        else:
-            return not_ok(msg="invalid parameters")
+        data = request.get_json()
+        try:
+            name = data["name"]
+            email = data["email"]
+            passwd = data["passwd"]
+        except KeyError:
+            return not_ok()
+        new_user = User(name, email, md5_with_salt(passwd))
+        db.session.add(new_user)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            return not_ok()
+        return ok(id=new_user.id_)
 
 
 @app.route("/api/user/login", methods=["POST"])
@@ -134,10 +144,12 @@ def api_user_login():
         "uid": <uid of the user>
     }
     """
+    data = request.get_json()
     if not current_user.is_anonymous:
         return not_ok(msg="already logged in")
     else:
-        form = request.form
+        user = User.query.filter_by(name_=data["name"],
+                                    passwd_hash_=md5_with_salt(data["passwd"]))
         user = User.get_user(name=form.get("name"), passwd=form.get("passwd"))
         print(user)
         if user is None:
