@@ -38,7 +38,7 @@ def api_user_me():
     if current_user.is_anonymous:
         return not_ok()
     else:
-        return ok(uid=current_user.id_,
+        return ok(id=current_user.id_,
                   name=current_user.name_,
                   email=current_user.email_)
 

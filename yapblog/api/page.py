@@ -25,7 +25,7 @@ def api_page_page_id_comments_post(page_id):
     :param page_id:
     :return:
     """
-    if current_user.is_anonymous():
+    if current_user.is_anonymous:
         return not_ok()
     else:
         data = request.get_json()
@@ -35,10 +35,16 @@ def api_page_page_id_comments_post(page_id):
         except KeyError:
             return not_ok()
         new_comment = Comment(text)
-        new_comment.reply_to = Comment.query.filter_by(id_=reply_to_id).first()
-        if new_comment.reply_to.page.id_ != page_id:
-            return not_ok()
+        if reply_to_id is not None:
+            new_comment.reply_to = Comment.query.filter_by(id_=reply_to_id).first()
+            if new_comment.reply_to is not None:
+                try:
+                    if new_comment.reply_to.page.id_ != page_id:
+                        return not_ok()
+                except AttributeError:
+                    return not_ok()
         new_comment.page = Page.query.filter_by(id_=page_id).first()
+        new_comment.user = current_user
         db.session.add(new_comment)
         db.session.commit()
         return ok(id=new_comment.id_)

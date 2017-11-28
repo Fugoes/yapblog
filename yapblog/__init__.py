@@ -28,4 +28,4 @@ from yapblog.api import *
 def load_user(user_id):
     """ Required by flask_login """
     user_id = int(user_id)
-    return User.query.filter_by(uid=user_id).first()
+    return User.query.filter_by(id_=user_id).first()
