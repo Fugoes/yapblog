@@ -1,7 +1,7 @@
 """
-/api/tag                        GET, POST, DELETE
-/api/tag/articles/<tag.name>    GET
-/api/tag/tags/<article.id>      GET
+/api/tag               GET, POST, DELETE
+/api/tag/<tag.id>      GET
+/api/tag/<article.id>  GET
 """
 
 from flask import request
@@ -81,10 +81,10 @@ def api_tag_delete():
     pass
 
 
-@app.route("/api/tag/articles/<tag_name>", methods=["GET"])
-def api_tag_articles_tag_name(tag_name):
+@app.route("/api/tag/<int:tag_id>", methods=["GET"])
+def api_tag_tag_id(tag_id):
     """
-    Get an article list with the tag of tag_name.
+    Get an article list with the tag of tag_id.
 
     Method: GET
 
@@ -105,7 +105,7 @@ def api_tag_articles_tag_name(tag_name):
         }]
     }
     """
-    tag = Tag.query.filter_by(name_=tag_name).first()
+    tag = Tag.query.filter_by(id_=tag_id).first()
     if tag is None:
         return not_ok()
     return ok(
@@ -117,10 +117,10 @@ def api_tag_articles_tag_name(tag_name):
         } for article in tag.articles])
 
 
-@app.route("/api/tag/tags/<int:article_id>", methods=["GET"])
-def api_tag_tags_article_id(article_id):
+@app.route("/api/tag/<int:article_id>", methods=["GET"])
+def api_tag_article_id(article_id):
     """
-    Get an article list with the tag of tag_name.
+    Get a tag list of the article of article_id.
 
     Method: GET
 
