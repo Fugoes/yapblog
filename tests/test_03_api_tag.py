@@ -16,16 +16,16 @@ assert result["ok"]
 
 # test api_tag_delete()
 
-# test api_tag_articles_tag_name(tag_name)
-for i in range(10):
-    r = requests.get(url + "/articles/%d" % i)
+# test api_tag_tag_id(tag_id)
+for i in range(1, 11):
+    r = requests.get(url + "/%d" % i)
     result = json.loads(r.content.decode())
     print(result)
     assert result["ok"]
 
-# api_tag_tags_article_id(article_id)
+# api_tag_article_id(article_id)
 for i in range(1, 4):
-    r = requests.get(url + "/tags/%d" % i)
+    r = requests.get(url + "/%d" % i)
     result = json.loads(r.content.decode())
     print(result)
     assert result["ok"]
