@@ -1,13 +1,15 @@
 """
-/api/tag               GET, POST, DELETE
-/api/tag/<tag.id>      GET
-/api/tag/<article.id>  GET
+/api/tag                    GET, POST
+/api/tag/<tag.id>           GET, DELETE
+/api/tag/articles/<tag.id>  GET
+/api/tag/tags/<article.id>  GET
 """
 
 from flask import request
 from yapblog import app, db
 from yapblog.models import Tag, Article
 from yapblog.lib.api import ok, not_ok
+from sqlalchemy.exc import IntegrityError
 
 
 @app.route("/api/tag", methods=["GET"])
@@ -44,7 +46,7 @@ def api_tag_get():
 @app.route("/api/tag", methods=["POST"])
 def api_tag_post():
     """
-    Add the tag (with name of tag_name) for the article (with the id of article_id).
+    Add the tag with name of tag_name.
 
     Method: POST
 
@@ -56,15 +58,54 @@ def api_tag_post():
     Success:
     {
         "ok": True
+        "id": <new_tag.id>
+        "name": <new_tag.name>
     }
     """
-    pass
+    data = request.get_json()
+    try:
+        name = data["name"]
+    except KeyError:
+        return not_ok()
+    new_tag = Tag(name)
+    db.session.add(new_tag)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return not_ok()
+    return ok(id=new_tag.id_, name=new_tag.name_)
 
 
-@app.route("/api/tag", methods=["DELETE"])
-def api_tag_delete():
+@app.route("/api/tag/<int:tag_id>", methods=["GET"])
+def api_tag_tag_id_get(tag_id):
     """
-    Delete the tag (with name of tag_name) of the article (with the id of article_id).
+    GET the info of the tag with the id of tag_id.
+
+    Method: GET
+
+    :return:
+    Error:
+    {
+        "ok": False
+    }
+    Success:
+    {
+        "ok": True
+        "id": <tag.id>
+        "name": <tag.name>
+    }
+    """
+    tag = Tag.query.filter_by(id_=tag_id)
+    if tag is None:
+        return not_ok()
+    return ok(id=tag.id_, name=tag.name_)
+
+
+@app.route("/api/tag/<int:tag_id>", methods=["DELETE"])
+def api_tag_tag_id_delete(tag_id):
+    """
+    Delete the tag with id of tag_id.
 
     Method: DELETE
 
@@ -78,13 +119,18 @@ def api_tag_delete():
         "ok": True
     }
     """
-    pass
+    tag = Tag.query.filter_by(id_=tag_id)
+    if tag is None:
+        return not_ok()
+    tag.delete()
+    db.session.commit()
+    return ok()
 
 
-@app.route("/api/tag/<int:tag_id>", methods=["GET"])
-def api_tag_tag_id(tag_id):
+@app.route("/api/tag/articles/<int:tag_id>", methods=["GET"])
+def api_tag_articles_tag_id(tag_id):
     """
-    Get an article list with the tag of tag_id.
+    Get the article list with the tag of tag_id.
 
     Method: GET
 
@@ -117,10 +163,10 @@ def api_tag_tag_id(tag_id):
         } for article in tag.articles])
 
 
-@app.route("/api/tag/<int:article_id>", methods=["GET"])
-def api_tag_article_id(article_id):
+@app.route("/api/tag/tags/<int:article_id>", methods=["GET"])
+def api_tag_tags_article_id(article_id):
     """
-    Get a tag list of the article of article_id.
+    Get the tag list of the article of article_id.
 
     Method: GET
 
