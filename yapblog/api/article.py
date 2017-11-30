@@ -9,7 +9,7 @@ import datetime
 from flask import request
 from sqlalchemy.exc import IntegrityError
 from yapblog import app, db
-from yapblog.models import Article, Page
+from yapblog.models import Article, Page,Tag
 from yapblog.lib.api import ok, not_ok
 import yapblog.lib.regex as regex
 
@@ -130,6 +130,7 @@ def api_article_post():
         "id": <id of new article>
     }
     """
+
     data = request.get_json()
     try:
         date_time = datetime.datetime(*tuple(map(int, regex.date.fullmatch(data["date_time"]).groups())))
@@ -148,3 +149,78 @@ def api_article_post():
     except IntegrityError:
         return not_ok()
     return ok(id=new_article.id_)
+
+@app.route("/api/article/<int:article_id>/tags/add", methods=["POST"])
+def api_article_id_tags_add(article_id):
+    """
+    Add new tag to an Article.
+
+    Method: POST
+
+    Parameter: article_id
+    :return:
+    Error:
+    {
+        "ok": False
+    }
+    Success:
+    {
+        "ok": True,
+        "id": new_tag.id_,
+        "name":new_tag.name_
+    }
+    """
+    data = request.get_json()
+    try:
+        tag_name = data["tag_name"]
+    except KeyError:
+        return not_ok()
+    is_tag_exist = Tag.query.filter_by(name_ = tag_name).first()
+    if is_tag_exist is None:
+        new_tag = Tag(tag_name)
+        db.session.add(new_tag)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            return not_ok()
+    else:
+        new_tag = is_tag_exist
+    article = Article.query.filter_by(id_=article_id).first()
+    if article is None:
+        return not_ok()
+    article.tags.append(new_tag)
+    return ok(id=new_tag.id_,name=new_tag.name_)
+
+@app.route("/api/article/<int:article_id>/tags/delete", methods=["PATCH"])
+def api_article_id_tags_delete(article_id):
+    """
+    delete a tag from an Article.
+
+    Method: POST
+
+    Parameter: article_id
+    :return:
+    Error:
+    {
+        "ok": False
+    }
+    Success:
+    {
+        "ok": True,
+        "id": deleted_tag.id_,
+        "name":deleted_tag.name_
+    }
+    """
+    data = request.get_json()
+    try:
+        tag_name = data["tag_name"]
+    except KeyError:
+        return not_ok()
+    article = Article.query.filter_by(id_=article_id).first()
+    if article is None:
+        return not_ok()
+    deleted_tag = Tag.query.filter_by(name_=tag_name).first()
+    article.tags.remove(deleted_tag)
+    return ok(id=deleted_tag.id_,name=deleted_tag.name_)
+
