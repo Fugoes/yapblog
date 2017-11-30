@@ -1,6 +1,7 @@
 import json
 import requests
 import yapblog.config as config
+from yapblog.models import Tag, Page, Article
 
 url = "http://%s:%d/api/article" % (config.HOST, config.PORT)
 
@@ -61,6 +62,21 @@ print(result)
 assert result["ok"]
 
 r = requests.get(url + "/2")
+result = json.loads(r.content.decode())
+print(result)
+assert result["ok"]
+
+r = requests.post(url+"/2/tags/add",json={
+                  "tag_name":"CS"
+})
+result = json.loads(r.content.decode())
+print(result)
+print(str(Article.query.filter_by(id_=2).first()),Article.query.filter_by(id_=2).first().tags)
+assert result["ok"]
+
+r = requests.patch(url+"/2/tags/delete",json={
+                  "tag_name":"CS"
+})
 result = json.loads(r.content.decode())
 print(result)
 assert result["ok"]
