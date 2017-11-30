@@ -106,6 +106,8 @@ def api_user_login():
     }
     """
     data = request.get_json()
+    if data is None:
+        return not_ok()
     if not current_user.is_anonymous:
         return not_ok(msg="already logged in")
     else:

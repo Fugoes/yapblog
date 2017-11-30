@@ -7,15 +7,33 @@
                 name: $("#user_name").val(),
                 passwd: $("#user_passwd").val()
             };
+            var msg_box = $("#msg_box");
 
-            $.post("/api/user/login", post_data, function (result) {
-                var msg_box = $("#msg_box");
-                if (result.ok) {
-                    msg_box.text(result.uid);
-                } else {
-                    msg_box.text(result.msg);
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/api/user/login",
+                data: JSON.stringify(post_data),
+                dataType: "json",
+                success: function (data) {
+                    if (data.ok) {
+                        msg_box.attr("class", "alert alert-success fade in");
+                        msg_box.html("<strong>Success!</strong>");
+                    } else {
+                        if (data.msg === "already logged in") {
+                            msg_box.attr("class", "alert alert-info fade in");
+                            msg_box.html("<strong>You have already logged in!</strong>");
+                        } else {
+                            msg_box.attr("class", "alert alert-warning fade in");
+                            msg_box.html("<strong>Please input valid name and email!</strong>");
+                        }
+                    }
+                    setTimeout(function () {
+                        msg_box.empty();
+                        msg_box.removeAttr("class");
+                    }, 2000);
                 }
-            }, "json");
+            });
         }
 
         $(function () {
@@ -45,6 +63,7 @@
                 </div>
                 <button type="submit" class="btn btn-default" id="login_button">Submit</button>
             </form>
+            <p></p>
             <div id="msg_box"></div>
         </div>
         <div class="col-sm-4"></div>
