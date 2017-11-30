@@ -28,3 +28,21 @@
     margin-bottom: 20px;
     list-style: none;
 }
+
+.comment-author {
+    font-size: 14px;
+    color: #828282;
+}
+
+.comment-text {
+}
+
+.comment {
+    width: 100%;
+    margin: 0;
+    padding-right: 0px;
+    padding-left: 10px;
+    cursor: pointer;
+    border: 1px solid #e6e6e6;
+    list-style-type: none;
+}

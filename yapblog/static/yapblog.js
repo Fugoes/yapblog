@@ -1,31 +1,49 @@
 function gen_list(p, id_to_replies) {
     if (p in id_to_replies) {
         // have replies
-        var result = "<li id='comment" + p + "'><span></span><ul>";
+        var inner = "";
         for (var i in id_to_replies[p]) {
-            result += gen_list(id_to_replies[p][i], id_to_replies);
+            inner += gen_list(id_to_replies[p][i], id_to_replies);
         }
-        result += "</ul></li>";
-        return result;
+        return [
+            "<li id='comment" + p + "'>",
+            "   <div class='comment-author'></div>",
+            "   <div class='comment-text'></div>",
+            "   <ul class='comment'>" + inner,
+            "   </ul>",
+            "   <a href='#' onclick='reply_to(" + p + ")'>Reply</a>",
+            "</li>"
+        ].join("\n");
     } else {
-        return "<li id='comment" + p + "'><span></span></li>";
+        return [
+            "<li id='comment" + p + "'>",
+            "   <div class='comment-author'></div>",
+            "   <div class='comment-text'></div>",
+            "   <a href='#' onclick='reply_to(" + p + ")'>Reply</a>",
+            "</li>"
+        ].join("\n");
     }
 }
 
+function reply_to(comment_id) {
+    $("#comment" + comment_id).append("<textarea class='form-control' rows='5' id='comment" + comment_id + "'></textarea>");
+}
+
 function load_comment(comment_id) {
+    var this_comment = "#comment" + comment_id;
     var comment = $.ajax({
         type: "GET",
         url: "/api/comment/" + comment_id
     });
     comment.done(function (data) {
         if (data.ok) {
-            $("#comment" + comment_id + " span").text(data.text);
+            $(this_comment + " .comment-author").text(data.author_name);
+            $(this_comment + " .comment-text").text(data.text);
         }
     });
 }
 
 function load_comments(page_id, comments_box) {
-    var box = $(comments_box);
     var comments_meta = $.ajax({
         type: "GET",
         url: "/api/page/" + page_id + "/comments"
@@ -48,6 +66,8 @@ function load_comments(page_id, comments_box) {
                     }
                 }
             }
+            $(comments_box).html("<ul class='comment'></ul>");
+            var box = $(comments_box + " ul");
             for (var i in roots) {
                 var t = gen_list(roots[i], id_to_replies);
                 box.append(t);

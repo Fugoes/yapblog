@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block js %}
+    <script>
+        function do_register() {
+            var passwd = $("#user_passwd").val();
+            if (passwd === $("#user_confirm_passwd").val()) {
+                var post_data = {
+                    name: $("#user_name").val(),
+                    email: $("#user_email").val(),
+                    passwd: passwd
+                };
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/api/user",
+                    data: JSON.stringify(post_data),
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ok) {
+                            $("#msg_box").text("Successfully registered!");
+                        } else {
+                            $("#msg_box").text(result.msg);
+                        }
+                        $("#reg_button").prop("disabled", false);
+                    }
+                });
+            } else {
+                $("#msg_box").text("Unmatched password and confirm password.");
+            }
+        }
+
+        $(function () {
+            $("#register_form").on("submit", function (ev) {
+                $("#reg_button").prop("disabled", true);
+                ev.preventDefault();
+                do_register();
+            });
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <form id="register_form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input class="form-control" id="user_name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input class="form-control" id="user_email">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="user_passwd">
+                </div>
+                <div class="form-group">
+                    <label for="cpwd">Confirm Password:</label>
+                    <input type="password" class="form-control" id="user_confirm_passwd">
+                </div>
+                <button type="submit" class="btn btn-default" id="reg_button">Register</button>
+            </form>
+            <p></p>
+            <div id="msg_box"></div>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+{% endblock %}
