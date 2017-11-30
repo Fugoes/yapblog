@@ -16,7 +16,6 @@ result = json.loads(r.content.decode())
 print(result)
 assert result["ok"]
 
-
 # api_tag_post()
 r = requests.post(url, json={
     "name": "test_tag"
@@ -29,7 +28,6 @@ r = requests.get(url)
 result = json.loads(r.content.decode())
 print(result)
 assert result["ok"]
-
 
 # api_tag_articles_tag_id(tag_id)
 for i in range(1, 11):
