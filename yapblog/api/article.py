@@ -179,17 +179,17 @@ def api_article_id_tags_add(article_id):
     if is_tag_exist is None:
         new_tag = Tag(tag_name)
         db.session.add(new_tag)
-        try:
-            db.session.commit()
-        except IntegrityError:
-            db.session.rollback()
-            return not_ok()
     else:
         new_tag = is_tag_exist
     article = Article.query.filter_by(id_=article_id).first()
     if article is None:
         return not_ok()
     article.tags.append(new_tag)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return not_ok()
     return ok(id=new_tag.id_,name=new_tag.name_)
 
 @app.route("/api/article/<int:article_id>/tags/delete", methods=["PATCH"])
@@ -197,7 +197,7 @@ def api_article_id_tags_delete(article_id):
     """
     delete a tag from an Article.
 
-    Method: POST
+    Method: PATCH
 
     Parameter: article_id
     :return:
@@ -222,5 +222,9 @@ def api_article_id_tags_delete(article_id):
         return not_ok()
     deleted_tag = Tag.query.filter_by(name_=tag_name).first()
     article.tags.remove(deleted_tag)
+    try:
+        db.session.commit() 
+    except IntegrityError:
+        db.session.rollback()
+        return not_ok()
     return ok(id=deleted_tag.id_,name=deleted_tag.name_)
-
