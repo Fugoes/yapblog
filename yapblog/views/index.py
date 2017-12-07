@@ -41,13 +41,15 @@ def article_year_month_title(year, month, title):
                                    html_content=Markup(article.html_content_),
                                    navbar=navbar,
                                    sidebar=gen_sidebar())
+    else:
+        return redirect("/", code=404)
 
 
 @app.route("/tags/<string:tag_name>", methods=["GET"])
 def tags_tag_name(tag_name):
     tag = Tag.query.filter_by(name_=tag_name).first()
     if tag is None:
-        return redirect(url_for("/"), code=404)
+        return redirect("/", code=404)
     return render_template(
         "tag.html",
         tag_id=tag.id_,
