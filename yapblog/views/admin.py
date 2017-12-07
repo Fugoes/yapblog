@@ -73,17 +73,8 @@ def admin_user():
                            sidebar=sidebar)
 
 
-@app.route("/admin/user/<int:user_id>", methods=["GET"])
-def admin_user_user_id(user_id):
-    return render_template("admin/user_id.html",
-                           user_id=user_id,
-                           navbar=navbar,
-                           sidebar=sidebar)
-
-
 @app.route("/admin/user/add", methods=["GET"])
 def admin_user_add():
     return render_template("admin/user_add.html",
                            navbar=navbar,
                            sidebar=sidebar)
-

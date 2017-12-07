@@ -17,10 +17,11 @@ import yapblog.lib.regex as regex
 
 def get_tags_from_tag_names(tags):
     for tag_name in tags:
-        tag = Tag.query.filter_by(name_=tag_name).first()
-        if tag is None:
-            tag = Tag(tag_name)
-        yield tag
+        if len(tag_name) > 0:
+            tag = Tag.query.filter_by(name_=tag_name).first()
+            if tag is None:
+                tag = Tag(tag_name)
+            yield tag
 
 
 @app.route("/api/article/<int:article_id>/markdown_content", methods=["GET"])
@@ -38,6 +39,7 @@ def api_article_article_id_get_markdown_content(article_id):
     Success:
     {
         "ok": True,
+        "tags": <article.tags.name>,
         "title": <article.title>,
         "date_time": <article.date>,
         "markdown_content": <article.markdown_content>,
@@ -49,6 +51,7 @@ def api_article_article_id_get_markdown_content(article_id):
         return not_ok()
     date_time = article.date_time_
     return ok(title=article.title_,
+              tags=[tag.name_ for tag in article.tags],
               date_time="%04d-%02d-%02d" % (date_time.year, date_time.month, date_time.day),
               markdown_content=article.markdown_content_,
               page_id=article.page_id_)
@@ -251,5 +254,6 @@ def api_article_article_id_patch(article_id):
     try:
         db.session.commit()
     except IntegrityError:
+        db.session.rollback()
         return not_ok()
     return ok()

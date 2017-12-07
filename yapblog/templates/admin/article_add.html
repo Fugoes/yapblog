@@ -26,11 +26,17 @@
                 msg_box.html("<strong>Loading...</strong>");
 
                 var title = $("#article_title").val();
+                var tags = $("#article_tags").val().split(",").map(function (x) {
+                    return x.trim();
+                }).filter(function (x) {
+                    return x.length > 0;
+                });
                 var date_time = $("#article_date").val();
                 var markdown_content = $("#article_markdown_content").val();
 
                 var data = {
                     title: title,
+                    tags: tags,
                     date_time: date_time,
                     markdown_content: markdown_content
                 };
@@ -62,6 +68,10 @@
         <div class="form-group">
             <label>Title:</label>
             <input class="form-control" id="article_title">
+        </div>
+        <div class="form-group">
+            <label>Tags:</label>
+            <input class="form-control" id="article_tags">
         </div>
         <div class="form-group">
             <label>Date:</label>
