@@ -22,14 +22,6 @@ sidebar = SideBar(items=[
             SideBar.CollapsibleList.Item(link="/tags/EE", text="EE"),
         ],
     ),
-    SideBar.CollapsibleList(
-        id="article-management",
-        title="Article Management",
-        items=[
-            SideBar.CollapsibleList.Item(link="/", text="First"),
-            SideBar.CollapsibleList.Item(link="/", text="Second"),
-        ],
-    ),
 ])
 
 
