@@ -11,7 +11,39 @@ from sqlalchemy.exc import IntegrityError
 from yapblog import app, db
 from yapblog.models import Article, Page
 from yapblog.lib.api import ok, not_ok
+from yapblog.lib.format import markdown_to_html
 import yapblog.lib.regex as regex
+
+
+@app.route("/api/article/<int:article_id>/markdown_content", methods=["GET"])
+def api_article_article_id_get_markdown_content(article_id):
+    """
+    Get article's markdown_content with id of article_id.
+
+    Method: GET
+
+    :return:
+    Error:
+    {
+        "ok": False
+    }
+    Success:
+    {
+        "ok": True,
+        "title": <article.title>,
+        "date_time": <article.date>,
+        "markdown_content": <article.markdown_content>,
+        "page_id": <article.page_id>
+    }
+    """
+    article = Article.query.filter_by(id_=article_id).first()
+    if article is None:
+        return not_ok()
+    date_time = article.date_time_
+    return ok(title=article.title_,
+              date_time="%04d-%02d-%02d" % (date_time.year, date_time.month, date_time.day),
+              markdown_content=article.markdown_content_,
+              page_id=article.page_id_)
 
 
 @app.route("/api/article/<int:article_id>", methods=["GET"])
@@ -116,7 +148,7 @@ def api_article_post():
         {
             "title": "Hello World",
             "date_time": "2017-10-01",
-            "html_content": ""
+            "markdown_content": ""
         }
 
     :return:
@@ -137,10 +169,11 @@ def api_article_post():
         return not_ok()
     try:
         title = data["title"]
-        html_content = data["html_content"]
+        markdown_content = data["markdown_content"]
     except KeyError:
         return not_ok()
-    new_article = Article(title, date_time, html_content)
+    html_content = markdown_to_html(markdown_content)
+    new_article = Article(title, date_time, html_content, markdown_content)
     new_article.page = Page()
     db.session.add(new_article)
     try:
