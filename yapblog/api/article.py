@@ -9,7 +9,7 @@ import datetime
 from flask import request
 from sqlalchemy.exc import IntegrityError
 from yapblog import app, db
-from yapblog.models import Article, Page,Tag
+from yapblog.models import Article, Page, Tag
 from yapblog.lib.api import ok, not_ok
 from yapblog.lib.format import markdown_to_html
 import yapblog.lib.regex as regex
@@ -148,7 +148,8 @@ def api_article_post():
         {
             "title": "Hello World",
             "date_time": "2017-10-01",
-            "markdown_content": ""
+            "markdown_content": "",
+            "tags": ["tagA"]
         }
 
     :return:
@@ -171,17 +172,26 @@ def api_article_post():
     try:
         title = data["title"]
         markdown_content = data["markdown_content"]
+        tags = data["tags"]
     except KeyError:
         return not_ok()
+    print(tags)
     html_content = markdown_to_html(markdown_content)
     new_article = Article(title, date_time, html_content, markdown_content)
     new_article.page = Page()
+    for tag_name in tags:
+        tag = Tag.query.filter_by(name_=tag_name).first()
+        if tag is None:
+            tag = Tag(tag_name)
+        new_article.tags.append(tag)
     db.session.add(new_article)
     try:
         db.session.commit()
     except IntegrityError:
+        print("F")
         return not_ok()
     return ok(id=new_article.id_)
+
 
 @app.route("/api/article/<int:article_id>/tags/add", methods=["POST"])
 def api_article_id_tags_add(article_id):
@@ -208,7 +218,7 @@ def api_article_id_tags_add(article_id):
         tag_name = data["tag_name"]
     except KeyError:
         return not_ok()
-    is_tag_exist = Tag.query.filter_by(name_ = tag_name).first()
+    is_tag_exist = Tag.query.filter_by(name_=tag_name).first()
     if is_tag_exist is None:
         new_tag = Tag(tag_name)
         db.session.add(new_tag)
@@ -223,7 +233,8 @@ def api_article_id_tags_add(article_id):
     except IntegrityError:
         db.session.rollback()
         return not_ok()
-    return ok(id=new_tag.id_,name=new_tag.name_)
+    return ok(id=new_tag.id_, name=new_tag.name_)
+
 
 @app.route("/api/article/<int:article_id>/tags/delete", methods=["PATCH"])
 def api_article_id_tags_delete(article_id):
@@ -242,7 +253,7 @@ def api_article_id_tags_delete(article_id):
     {
         "ok": True,
         "id": deleted_tag.id_,
-        "name":deleted_tag.name_
+        "name": deleted_tag.name_
     }
     """
     data = request.get_json()
@@ -256,8 +267,8 @@ def api_article_id_tags_delete(article_id):
     deleted_tag = Tag.query.filter_by(name_=tag_name).first()
     article.tags.remove(deleted_tag)
     try:
-        db.session.commit() 
+        db.session.commit()
     except IntegrityError:
         db.session.rollback()
         return not_ok()
-    return ok(id=deleted_tag.id_,name=deleted_tag.name_)
+    return ok(id=deleted_tag.id_, name=deleted_tag.name_)

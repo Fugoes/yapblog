@@ -1,8 +1,8 @@
 __all__ = ["index"]
 
-from flask import render_template, Markup
+from flask import render_template, Markup, redirect, url_for
 from yapblog import app, config
-from yapblog.models import Article
+from yapblog.models import Article, Tag
 from yapblog.lib.page import NavBar, SideBar
 
 navbar = NavBar(
@@ -13,16 +13,11 @@ navbar = NavBar(
     ]
 )
 
-sidebar = SideBar(items=[
-    SideBar.TagList(
-        id="tags",
-        title="Tags",
-        items=[
-            SideBar.CollapsibleList.Item(link="/tags/CS", text="CS"),
-            SideBar.CollapsibleList.Item(link="/tags/EE", text="EE"),
-        ],
-    ),
-])
+
+def gen_sidebar():
+    return SideBar(items=[
+        SideBar.gen_tag_list()
+    ])
 
 
 @app.route("/", methods=["GET"])
@@ -31,7 +26,7 @@ def index():
         "index.html",
         title=config.WEBSITE_NAME,
         navbar=navbar,
-        sidebar=sidebar
+        sidebar=gen_sidebar()
     )
 
 
@@ -45,4 +40,18 @@ def article_year_month_title(year, month, title):
                                    title=title,
                                    html_content=Markup(article.html_content_),
                                    navbar=navbar,
-                                   sidebar=sidebar)
+                                   sidebar=gen_sidebar())
+
+
+@app.route("/tags/<string:tag_name>", methods=["GET"])
+def tags_tag_name(tag_name):
+    tag = Tag.query.filter_by(name_=tag_name).first()
+    if tag is None:
+        return redirect(url_for("/"), code=404)
+    return render_template(
+        "tag.html",
+        tag_id=tag.id_,
+        title=tag_name,
+        navbar=navbar,
+        sidebar=gen_sidebar()
+    )
