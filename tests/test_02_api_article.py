@@ -35,19 +35,22 @@ r = requests.post(url, json={
     "title": "Hello World",
     "date_time": "2017-1-1",
     "markdown_content": content,
+    "tags": ["YapBlog", "Test"]
 })
 result = json.loads(r.content.decode())
 print(result)
 assert result["ok"]
 
-r = requests.post(url, json={
-    "title": "Hello World Again",
-    "date_time": "2017-1-19",
-    "markdown_content": content,
-})
-result = json.loads(r.content.decode())
-print(result)
-assert result["ok"]
+for i in range(4):
+    r = requests.post(url, json={
+        "title": "Hello World Again%d" % i,
+        "date_time": "2017-1-19",
+        "markdown_content": content,
+        "tags": ["YapBlog"]
+    })
+    result = json.loads(r.content.decode())
+    print(result)
+    assert result["ok"]
 
 r = requests.get(url + "/1")
 result = json.loads(r.content.decode())
@@ -59,16 +62,16 @@ result = json.loads(r.content.decode())
 print(result)
 assert result["ok"]
 
-r = requests.post(url+"/2/tags/add",json={
-                  "tag_name":"CS"
+r = requests.post(url + "/2/tags/add", json={
+    "tag_name": "CS"
 })
 result = json.loads(r.content.decode())
 print(result)
-print(str(Article.query.filter_by(id_=2).first()),Article.query.filter_by(id_=2).first().tags)
+print(str(Article.query.filter_by(id_=2).first()), Article.query.filter_by(id_=2).first().tags)
 assert result["ok"]
 
-r = requests.patch(url+"/2/tags/delete",json={
-                  "tag_name":"CS"
+r = requests.patch(url + "/2/tags/delete", json={
+    "tag_name": "CS"
 })
 result = json.loads(r.content.decode())
 print(result)
