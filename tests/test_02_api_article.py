@@ -62,17 +62,8 @@ result = json.loads(r.content.decode())
 print(result)
 assert result["ok"]
 
-r = requests.post(url + "/2/tags/add", json={
-    "tag_name": "CS"
+r = requests.patch(url + "/2", json={
+    "tags": ["So", "What"]
 })
 result = json.loads(r.content.decode())
-print(result)
-print(str(Article.query.filter_by(id_=2).first()), Article.query.filter_by(id_=2).first().tags)
-assert result["ok"]
-
-r = requests.patch(url + "/2/tags/delete", json={
-    "tag_name": "CS"
-})
-result = json.loads(r.content.decode())
-print(result)
 assert result["ok"]
