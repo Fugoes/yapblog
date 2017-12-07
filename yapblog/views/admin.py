@@ -86,3 +86,4 @@ def admin_user_add():
     return render_template("admin/user_add.html",
                            navbar=navbar,
                            sidebar=sidebar)
+

@@ -155,8 +155,8 @@ def api_tag_articles_tag_id(tag_id):
     if tag is None:
         return not_ok()
     return ok(
-        tag_id=tag.id_,
-        tag_name=tag.name_,
+#        tag_id=tag.id_,
+#        tag_name=tag.name_,
         articles=[{
             "id": article.id_,
             "title": article.title_
