@@ -43,4 +43,3 @@ def api_comment_delete_comment_id(comment_id):
         db.session.rollback()
         return not_ok()
     return ok(id=comment.id_, is_deleted=comment.is_deleted_)
-
