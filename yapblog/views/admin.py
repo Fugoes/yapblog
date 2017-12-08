@@ -4,6 +4,9 @@ from flask import render_template
 from yapblog import app, config
 from yapblog.models import User, Article
 from yapblog.lib.page import SideBar, NavBar
+from flask_login import login_required,current_user
+from flask_login.utils import wraps
+
 
 sidebar = SideBar(items=[
     SideBar.CollapsibleList(
@@ -32,8 +35,23 @@ navbar = NavBar(
     ]
 )
 
+# This must work with login_required
+def admin_required(func):
+    '''
+    Warning: This must work with @login_required
+    '''
+    @login_required
+    @wraps(func)
+    def __decorator(*args, **kwargs):
+        if current_user.is_admin:
+           return func(*args, **kwargs)
+        else:
+           return render_template("not_found.html",text="404 Not Found")
+    return __decorator
+
 
 @app.route("/admin", methods=["GET"])
+@admin_required
 def admin():
     info = dict()
     info["user_count"] = User.query.count()
@@ -45,6 +63,7 @@ def admin():
 
 
 @app.route("/admin/article/add", methods=["GET"])
+@admin_required
 def admin_article_add():
     return render_template("admin/article_add.html",
                            navbar=navbar,
@@ -52,6 +71,7 @@ def admin_article_add():
 
 
 @app.route("/admin/article", methods=["GET"])
+@admin_required
 def admin_article():
     return render_template("admin/article.html",
                            navbar=navbar,
@@ -59,6 +79,7 @@ def admin_article():
 
 
 @app.route("/admin/article/<int:article_id>", methods=["GET"])
+@admin_required
 def admin_article_article_id(article_id):
     return render_template("admin/article_id.html",
                            article_id=article_id,
@@ -67,6 +88,7 @@ def admin_article_article_id(article_id):
 
 
 @app.route("/admin/user", methods=["GET"])
+@admin_required
 def admin_user():
     return render_template("admin/user.html",
                            navbar=navbar,
@@ -74,6 +96,7 @@ def admin_user():
 
 
 @app.route("/admin/user/add", methods=["GET"])
+@admin_required
 def admin_user_add():
     return render_template("admin/user_add.html",
                            navbar=navbar,
