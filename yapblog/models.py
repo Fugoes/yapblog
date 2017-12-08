@@ -76,6 +76,7 @@ class Comment(db.Model):
     # Attribute
     id_ = db.Column("id", db.Integer, db.Sequence("comment_id_seq"), primary_key=True)
     text_ = db.Column("text", db.Text, nullable=False)
+    is_deleted_ = db.Column("delete", db.Boolean, nullable=False)
     # Foreign key
     reply_to_id_ = db.Column("reply_to_id", db.Integer, db.ForeignKey("comments.id"), nullable=True)
     page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=True)
@@ -88,9 +89,10 @@ class Comment(db.Model):
 
     def __init__(self, text):
         self.text_ = text
+        self.is_deleted_ = False
 
     def __str__(self):
-        return "<Comment id=%d text='%s'>" % (self.id_, self.text_)
+        return "<Comment id=%d text='%s' is_deleted='%s'>" % (self.id_, self.text_, self.is_deleted_)
 
     def __repr__(self):
         return self.__str__()
