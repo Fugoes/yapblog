@@ -137,7 +137,7 @@ def api_article_get():
         ]
     }
     """
-    articles = Article.query.all()
+    articles = Article.query.order_by(db.desc(Article.date_time_)).all()
     return ok(articles=[
         {
             "id": article.id_,
