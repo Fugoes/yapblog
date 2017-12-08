@@ -1,7 +1,8 @@
 from flask_login import current_user
+from itertools import groupby
 from copy import deepcopy
-from yapblog import config
-from yapblog.models import Tag
+from yapblog import config, db
+from yapblog.models import Tag, Article
 
 
 class NavBar(object):
@@ -102,3 +103,15 @@ def get_navbar(active):
     for item in navbar.items:
         item.is_active = item.text == active
     return navbar
+
+
+def get_archives():
+    items = []
+    for (year, month), group in groupby(Article.query.order_by(Article.date_time_).all(),
+                                        lambda x: (x.date_time_.year, x.date_time_.month)):
+        count = len(list(group))
+        items.append(SideBar.CollapsibleList.Item(link="/archives/%04d/%02d" % (year, month),
+                                                  text="%04d-%02d (%d)" % (year, month, count)))
+    return SideBar.CollapsibleList(id="archives",
+                                   title="Archives",
+                                   items=items)
