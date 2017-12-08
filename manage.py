@@ -20,7 +20,9 @@ if len(argv) == 2:
         db.create_all()
         db.session.add(User(name=config.ADMIN_USER_NAME,
                             email=config.ADMIN_USER_EMAIL,
-                            passwd_hash=md5_with_salt(config.ADMIN_USER_PASSWORD)))
+                            passwd_hash=md5_with_salt(config.ADMIN_USER_PASSWORD),
+                            is_admin=True))
+        db.session.commit()
 
     elif argv[1] == "drop-tables":
         from yapblog import db
