@@ -3,11 +3,11 @@ import requests
 import yapblog.config as config
 
 url = "http://%s:%d" % (config.HOST, config.PORT)
-
+'''
 s = requests.Session()
 r = s.post(url + "/api/user/login", json={
     "name": "debug",
-    "passwd": "debug",
+    "passwd": "debug"
 })
 result = json.loads(r.content.decode())
 print(result)
@@ -69,3 +69,12 @@ for i in roots:
         result = json.loads(r.content.decode())
         print(result)
         assert result["ok"]
+'''
+r = requests.delete(url + "/api/comment/delete/1")
+result = json.loads(r.content.decode())
+print(result)
+assert result["ok"]
+r = requests.delete(url + "/api/comment/delete/2")
+result = json.loads(r.content.decode())
+print(result)
+assert result["ok"]
