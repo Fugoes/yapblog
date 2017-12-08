@@ -4,9 +4,7 @@ from flask import render_template
 from yapblog import app, config
 from yapblog.models import User, Article
 from yapblog.lib.page import SideBar, NavBar
-from flask_login import login_required,current_user
-from flask_login.utils import wraps
-
+from yapblog.lib.auth import admin_required
 
 sidebar = SideBar(items=[
     SideBar.CollapsibleList(
@@ -34,20 +32,6 @@ navbar = NavBar(
         NavBar.Item(is_active=False, link="/about", text="About")
     ]
 )
-
-# This must work with login_required
-def admin_required(func):
-    '''
-    Warning: This must work with @login_required
-    '''
-    @login_required
-    @wraps(func)
-    def __decorator(*args, **kwargs):
-        if current_user.is_admin:
-           return func(*args, **kwargs)
-        else:
-           return render_template("not_found.html",text="404 Not Found")
-    return __decorator
 
 
 @app.route("/admin", methods=["GET"])
