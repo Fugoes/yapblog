@@ -13,7 +13,8 @@ def api_page_page_id_comments_get(page_id):
     else:
         return ok(comments=[{
             "id": comment.id_,
-            "reply_to_id": comment.reply_to_id_
+            "reply_to_id": comment.reply_to_id_,
+            "is_deleted": comment.is_deleted_
         } for comment in page.comments])
 
 
