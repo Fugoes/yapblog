@@ -1,8 +1,7 @@
 __all__ = ["index"]
 
-from flask import render_template, Markup, redirect, url_for
-from flask_login import current_user
-from yapblog import app, config
+from flask import render_template, Markup, redirect
+from yapblog import app, config, db
 from yapblog.models import Article, Tag
 from yapblog.lib.page import NavBar, SideBar, get_navbar, get_archives
 
@@ -18,6 +17,7 @@ def gen_sidebar():
 def index():
     return render_template(
         "index.html",
+        articles=Article.query.order_by(db.desc(Article.date_time_)).all(),
         title=config.WEBSITE_NAME,
         navbar=get_navbar("Home"),
         sidebar=gen_sidebar()
@@ -46,6 +46,7 @@ def tags_tag_name(tag_name):
         return redirect("/", code=404)
     return render_template(
         "tag.html",
+        articles=tag.articles,
         tag_id=tag.id_,
         title=tag_name,
         navbar=get_navbar(None),
