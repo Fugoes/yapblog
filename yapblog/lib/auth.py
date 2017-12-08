@@ -17,7 +17,7 @@ def admin_required(func):
     @login_required
     @wraps(func)
     def __decorator(*args, **kwargs):
-        if current_user.is_admin:
+        if current_user.is_admin_:
             return func(*args, **kwargs)
         else:
             return render_template("not_found.html", text="404 Not Found")
