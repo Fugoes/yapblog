@@ -78,7 +78,7 @@ class Comment(db.Model):
     # Attribute
     id_ = db.Column("id", db.Integer, db.Sequence("comment_id_seq"), primary_key=True)
     text_ = db.Column("text", db.Text, nullable=False)
-    is_deleted_ = db.Column("delete", db.Boolean, nullable=False)
+    is_deleted_ = db.Column("is_deleted", db.Boolean, nullable=False)
     # Foreign key
     reply_to_id_ = db.Column("reply_to_id", db.Integer, db.ForeignKey("comments.id"), nullable=True)
     page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=True)
