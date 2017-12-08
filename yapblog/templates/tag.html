@@ -1,31 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block js %}
-    <script>
-        $(function () {
-            $.getJSON("/api/tag/{{ tag_id }}/articles", function (result) {
-                var content = $("#post-list");
-                if (result.ok) {
-                    $.each(result.articles, function (index, item) {
-                        var link = encodeURI("/" + item.date_time.slice(0, 4) + "/" + item.date_time.slice(5, 7) + "/" + item.title);
-                        content.append([
-                            "<li>",
-                            "   <span class=\"post-meta\">" + item.date_time + "</span>",
-                            "   <h3 class=\"post-title\">",
-                            "       <a href=\"" + link + "\">" + item.title + "</a>",
-                            "   </h3>",
-                            "</li>"
-                        ].join("\n"));
-                    });
-                } else {
-                }
-            });
-            load_comments(1, "#comments");
-        })
-    </script>
 {% endblock %}
-
 {% block content %}
-    <ul class="post-list" id="post-list">
-    </ul>
+    {% include "element/post.html" %}
 {% endblock %}
