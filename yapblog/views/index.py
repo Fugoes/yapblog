@@ -1,17 +1,10 @@
 __all__ = ["index"]
 
 from flask import render_template, Markup, redirect, url_for
+from flask_login import current_user
 from yapblog import app, config
 from yapblog.models import Article, Tag
-from yapblog.lib.page import NavBar, SideBar
-
-navbar = NavBar(
-    title=config.WEBSITE_NAME,
-    items=[
-        NavBar.Item(is_active=True, link="/", text="Home"),
-        NavBar.Item(is_active=False, link="/about", text="About")
-    ]
-)
+from yapblog.lib.page import NavBar, SideBar, get_navbar
 
 
 def gen_sidebar():
@@ -25,7 +18,7 @@ def index():
     return render_template(
         "index.html",
         title=config.WEBSITE_NAME,
-        navbar=navbar,
+        navbar=get_navbar("Home"),
         sidebar=gen_sidebar()
     )
 
@@ -39,7 +32,7 @@ def article_year_month_title(year, month, title):
             return render_template("article.html",
                                    title=title,
                                    html_content=Markup(article.html_content_),
-                                   navbar=navbar,
+                                   navbar=get_navbar(None),
                                    sidebar=gen_sidebar())
     else:
         return redirect("/", code=404)
@@ -54,6 +47,6 @@ def tags_tag_name(tag_name):
         "tag.html",
         tag_id=tag.id_,
         title=tag_name,
-        navbar=navbar,
+        navbar=get_navbar(None),
         sidebar=gen_sidebar()
     )
