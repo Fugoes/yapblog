@@ -236,3 +236,7 @@
 .tag-max {
     font-size: 13pt;
 }
+
+img {
+    max-width: 100%;
+}
