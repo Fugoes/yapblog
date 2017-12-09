@@ -4,7 +4,8 @@
 
 # Requirement
 
-Please install `python3`, `flask`,`flask-login`, `flask-sqlalchemy`.
+Please install `python3` with `flask`,`flask-login` and `flask-sqlalchemy` installed.
+Please install `pandoc` for converting markdown to html.
 
 # 项目结构
 
