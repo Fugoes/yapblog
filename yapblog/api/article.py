@@ -9,7 +9,7 @@ import datetime
 from flask import request
 from sqlalchemy.exc import IntegrityError
 from yapblog import app, db
-from yapblog.models import Article, Page, Tag
+from yapblog.models import Article, Page, Tag, Category
 from yapblog.lib.api import ok, not_ok
 from yapblog.lib.format import markdown_to_html
 import yapblog.lib.regex as regex
@@ -40,6 +40,7 @@ def api_article_article_id_get_markdown_content(article_id):
     {
         "ok": True,
         "tags": <article.tags.name>,
+        "category": <article.category.name>,
         "title": <article.title>,
         "date_time": <article.date>,
         "markdown_content": <article.markdown_content>,
@@ -52,6 +53,7 @@ def api_article_article_id_get_markdown_content(article_id):
     date_time = article.date_time_
     return ok(title=article.title_,
               tags=[tag.name_ for tag in article.tags],
+              category=article.category.name_,
               date_time="%04d-%02d-%02d" % (date_time.year, date_time.month, date_time.day),
               markdown_content=article.markdown_content_,
               page_id=article.page_id_)
@@ -154,7 +156,7 @@ def api_article_post():
 
     Method: POST
 
-    Parameter: title, date, html_content
+    Parameter: title, date, tags, category, markdown_content
     example:
         {
             "title": "Hello World",
@@ -182,6 +184,7 @@ def api_article_post():
     try:
         title = data["title"]
         markdown_content = data["markdown_content"]
+        category = data["category"]
         tags = data["tags"]
     except KeyError:
         return not_ok()
@@ -190,6 +193,8 @@ def api_article_post():
     new_article.page = Page()
     for tag in get_tags_from_tag_names(tags):
         new_article.tags.append(tag)
+    if category is not None:
+        new_article.category = Category(category)
     db.session.add(new_article)
     try:
         db.session.commit()
@@ -214,7 +219,8 @@ def api_article_article_id_patch(article_id):
             "title": "Hello World",
             "date_time": "2017-10-01",
             "markdown_content": "",
-            "tags": ["tagA"]
+            "tags": ["tagA"],
+            "category": "category"
         }
 
     :return:
@@ -249,6 +255,15 @@ def api_article_article_id_patch(article_id):
         article.tags[:] = []
         for tag in get_tags_from_tag_names(tags):
             article.tags.append(tag)
+    except KeyError:
+        pass
+    try:
+        category_name = data["category"]
+        if category_name is not None:
+            category = Category.query.filter_by(name_=category_name)
+            if category is not None:
+                category = Category(category_name)
+            article.category = category
     except KeyError:
         pass
     try:
