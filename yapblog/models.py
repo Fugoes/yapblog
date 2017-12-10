@@ -2,9 +2,22 @@
 Database interface
 """
 
-__all__ = ["Tag", "Page", "Article", "Comment", "User"]
+__all__ = ["Tag", "Page", "Article", "Comment", "User", "Category"]
 
 from yapblog import db
+
+
+class Category(db.Model):
+    __tablename__ = "categories"
+    # Attribute
+    id_ = db.Column("id", db.Integer, db.Sequence("category_id_seq"), primary_key=True)
+    name_ = db.Column("name", db.String(1024), unique=True, nullable=False)
+    # Relationship
+    articles = db.relateionship("Article", back_populates="category", uselist=True)
+
+    def __init__(self, name):
+        self.name_ = name
+
 
 tag_and_article = db.Table("tag_and_article",
                            db.Column("tag_id", db.Integer, db.ForeignKey("tags.id")),
@@ -56,9 +69,11 @@ class Article(db.Model):
     markdown_content_ = db.Column("markdown_content", db.Text)
     # Foreign key
     page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=True)
+    category_id_ = db.Column("category_id", db.Integer, db.ForeignKey("categories"), nullable=True)
     # Relationship
     page = db.relationship("Page", uselist=False)
     tags = db.relationship("Tag", secondary=tag_and_article, back_populates="articles")
+    category = db.relationship("Category", back_populates="categories", uselist=False)
 
     def __init__(self, title, date_time, html_content, markdown_content):
         self.title_ = title
