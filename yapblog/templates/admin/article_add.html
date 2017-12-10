@@ -26,13 +26,19 @@
                 msg_box.html("<strong>Loading...</strong>");
 
                 var title = $("#article_title").val();
+                var tags = $("#article_tags").val().split(",").map(function (x) {
+                    return x.trim();
+                }).filter(function (x) {
+                    return x.length > 0;
+                });
                 var date_time = $("#article_date").val();
-                var html_content = $("#article_html_content").val();
+                var markdown_content = $("#article_markdown_content").val();
 
                 var data = {
                     title: title,
+                    tags: tags,
                     date_time: date_time,
-                    html_content: html_content
+                    markdown_content: markdown_content
                 };
 
                 $.ajax({
@@ -64,12 +70,16 @@
             <input class="form-control" id="article_title">
         </div>
         <div class="form-group">
+            <label>Tags:</label>
+            <input class="form-control" id="article_tags">
+        </div>
+        <div class="form-group">
             <label>Date:</label>
             <input class="form-control" id="article_date">
         </div>
         <div class="form-group">
             <label>Content:</label>
-            <textarea class="form-control" rows="10" id="article_html_content"></textarea>
+            <textarea class="form-control" rows="10" id="article_markdown_content"></textarea>
         </div>
         <div id="msg_box"></div>
         <button type="submit" class="btn btn-info" id="button">Add</button>

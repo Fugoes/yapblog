@@ -128,6 +128,7 @@ def api_tag_tag_id_delete(tag_id):
 
 
 @app.route("/api/tag/articles/<int:tag_id>", methods=["GET"])
+@app.route("/api/tag/<int:tag_id>/articles", methods=["GET"])
 def api_tag_articles_tag_id(tag_id):
     """
     Get the article list with the tag of tag_id.
@@ -142,25 +143,23 @@ def api_tag_articles_tag_id(tag_id):
     Success:
     {
         "ok": True,
-        "tag_id": <tag.id>
-        "tag_name": <tag.name>
         "articles":
         [{
-            "id": <article.id>
-            "title": <article.title>
+            "id": <article.id>,
+            "title": <article.title>,
+            "date_time": <aritcle.date_time>,
         }]
     }
     """
     tag = Tag.query.filter_by(id_=tag_id).first()
     if tag is None:
         return not_ok()
-    return ok(
-#        tag_id=tag.id_,
-#        tag_name=tag.name_,
-        articles=[{
-            "id": article.id_,
-            "title": article.title_
-        } for article in tag.articles])
+    print(tag.articles)
+    return ok(articles=[{
+        "id": article.id_,
+        "title": article.title_,
+        "date_time": "%04d-%02d-%02d" % (article.date_time_.year, article.date_time_.month, article.date_time_.day)
+    } for article in tag.articles])
 
 
 @app.route("/api/tag/tags/<int:article_id>", methods=["GET"])

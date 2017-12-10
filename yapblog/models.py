@@ -53,16 +53,18 @@ class Article(db.Model):
     title_ = db.Column("title", db.String(1024), unique=True, nullable=False)
     date_time_ = db.Column("date_time", db.DateTime)
     html_content_ = db.Column("html_content", db.Text)
+    markdown_content_ = db.Column("markdown_content", db.Text)
     # Foreign key
     page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=True)
     # Relationship
     page = db.relationship("Page", uselist=False)
     tags = db.relationship("Tag", secondary=tag_and_article, back_populates="articles")
 
-    def __init__(self, title, date_time, html_content):
+    def __init__(self, title, date_time, html_content, markdown_content):
         self.title_ = title
         self.date_time_ = date_time
         self.html_content_ = html_content
+        self.markdown_content_ = markdown_content
 
     def __str__(self):
         return "<Article id=%d title='%s'>" % (self.id_, self.title_)
@@ -76,7 +78,7 @@ class Comment(db.Model):
     # Attribute
     id_ = db.Column("id", db.Integer, db.Sequence("comment_id_seq"), primary_key=True)
     text_ = db.Column("text", db.Text, nullable=False)
-    is_deleted_ = db.Column("delete", db.Boolean, nullable=False)
+    is_deleted_ = db.Column("is_deleted", db.Boolean, nullable=False)
     # Foreign key
     reply_to_id_ = db.Column("reply_to_id", db.Integer, db.ForeignKey("comments.id"), nullable=True)
     page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=True)

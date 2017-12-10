@@ -1,45 +1,28 @@
 __all__ = ["index"]
 
-from flask import render_template, Markup
-from yapblog import app, config
-from yapblog.models import Article
-from yapblog.lib.page import NavBar, SideBar
+from flask import render_template, Markup, redirect
+from yapblog import app, config, db
+from yapblog.models import Article, Tag
+from yapblog.lib.page import NavBar, SideBar, get_navbar, get_archives
 
-navbar = NavBar(
-    title=config.WEBSITE_NAME,
-    items=[
-        NavBar.Item(is_active=True, link="/", text="Home"),
-        NavBar.Item(is_active=False, link="/about", text="About")
-    ]
-)
 
-sidebar = SideBar(items=[
-    SideBar.TagList(
-        id="tags",
-        title="Tags",
-        items=[
-            SideBar.CollapsibleList.Item(link="/tags/CS", text="CS"),
-            SideBar.CollapsibleList.Item(link="/tags/EE", text="EE"),
-        ],
-    ),
-    SideBar.CollapsibleList(
-        id="article-management",
-        title="Article Management",
-        items=[
-            SideBar.CollapsibleList.Item(link="/", text="First"),
-            SideBar.CollapsibleList.Item(link="/", text="Second"),
-        ],
-    ),
-])
+def gen_sidebar():
+    return SideBar(items=[
+        SideBar.gen_tag_list(),
+        get_archives(),
+    ])
 
 
 @app.route("/", methods=["GET"])
 def index():
     return render_template(
+<<<<<<< HEAD
         "home.html",
+        articles=Article.query.order_by(db.desc(Article.date_time_)).all(),
+>>>>>>> 750357a821e55c06a64c86281c53737166f4f3ce
         title=config.WEBSITE_NAME,
-        navbar=navbar,
-        sidebar=sidebar
+        navbar=get_navbar("Home"),
+        sidebar=gen_sidebar()
     )
 
 @app.route("/welcome", methods=["GET"])
@@ -57,5 +40,32 @@ def article_year_month_title(year, month, title):
             return render_template("article.html",
                                    title=title,
                                    html_content=Markup(article.html_content_),
-                                   navbar=navbar,
-                                   sidebar=sidebar)
+                                   navbar=get_navbar(None),
+                                   sidebar=gen_sidebar())
+    else:
+        return redirect("/", code=404)
+
+
+@app.route("/tags/<string:tag_name>", methods=["GET"])
+def tags_tag_name(tag_name):
+    tag = Tag.query.filter_by(name_=tag_name).first()
+    if tag is None:
+        return redirect("/", code=404)
+    return render_template(
+        "tag.html",
+        articles=tag.articles,
+        tag_id=tag.id_,
+        title=tag_name,
+        navbar=get_navbar(None),
+        sidebar=gen_sidebar()
+    )
+
+
+@app.route("/archives/<int:year>/<int:month>", methods=["GET"])
+def archives_year_month_get(year, month):
+    articles = Article.query.filter(Article.date_time_.between("%04d-%02d" % (year, month),
+                                                               "%04d-%02d" % (year, month + 1))).all()
+    return render_template("archives.html",
+                           articles=articles,
+                           navbar=get_navbar(None),
+                           sidebar=gen_sidebar())
