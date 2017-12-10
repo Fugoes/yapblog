@@ -1,0 +1,12 @@
+<ul class="post-list" id="post-list">
+    {% for article in articles %}
+        <li>
+            <span class="post-meta">{{ article.date_time_.strftime("%B %d, %Y %a") }}</span>
+            <h3 class="post-title">
+                <a href="/{{ "%04d" % article.date_time_.year }}/{{ "%02d" % article.date_time_.month }}/{{ article.title_ }}">
+                    {{ article.title_ }}
+                </a>
+            </h3>
+        </li>
+    {% endfor %}
+</ul>

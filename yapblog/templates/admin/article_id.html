@@ -2,15 +2,59 @@
 {% block title %}Admin|Article{% endblock %}
 {% block js %}
     <script>
-        article = $.getJSON("/api/article/{{ article_id }}");
+        article = $.getJSON("/api/article/{{ article_id }}/markdown_content");
 
         $(function () {
             article.done(function (data) {
                 if (data.ok) {
                     $("#article_title").val(data.title);
                     $("#article_date").val(data.date_time);
-                    $("#article_html_content").val(data.html_content);
+                    $("#article_markdown_content").val(data.markdown_content);
+                    $("#article_tags").val(data.tags.toString());
                 }
+            });
+            $("#article_form").on("submit", function (ev) {
+                var button = $("#button");
+                button.prop("disable", true);
+                ev.preventDefault();
+
+                var msg_box = $("#msg_box");
+                msg_box.attr("class", "alert alert-info fade in");
+                msg_box.html("<strong>Loading...</strong>");
+
+                var title = $("#article_title").val();
+                var tags = $("#article_tags").val().split(",").map(function (x) {
+                    return x.trim();
+                }).filter(function (x) {
+                    return x.length > 0;
+                });
+                var date_time = $("#article_date").val();
+                var markdown_content = $("#article_markdown_content").val();
+
+                var data = {
+                    title: title,
+                    tags: tags,
+                    date_time: date_time,
+                    markdown_content: markdown_content
+                };
+
+                $.ajax({
+                    type: "PATCH",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/api/article/{{ article_id }}",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        button.prop("disable", false);
+                        msg_box.attr("class", "alert alert-success fade in");
+                        msg_box.html("<strong>Success!</strong>");
+                        setTimeout(function () {
+                            msg_box.empty();
+                            msg_box.removeAttr("class");
+                        }, 2000);
+                    }
+                });
             });
         })
     </script>
@@ -23,12 +67,18 @@
             <input class="form-control" id="article_title">
         </div>
         <div class="form-group">
+            <label>Tags</label>
+            <input class="form-control" id="article_tags">
+        </div>
+        <div class="form-group">
             <label>Date:</label>
             <input class="form-control" id="article_date">
         </div>
         <div class="form-group">
             <label>Content:</label>
-            <textarea class="form-control" rows="10" id="article_html_content"></textarea>
+            <textarea class="form-control" rows="10" id="article_markdown_content"></textarea>
         </div>
+        <div id="msg_box"></div>
+        <button type="submit" class="btn btn-info" id="button">Submit</button>
     </form>
 {% endblock %}

@@ -41,7 +41,7 @@ tags = [Tag("%d" % i) for i in range(10)]
 
 print("Creating articles")
 pages = [Page() for _ in range(3)]
-articles = [Article("Hello World%d" % i, datetime(2017, 10, 10), content) for i in range(3)]
+articles = [Article("Hello World%d" % i, datetime(2017, 10, 10), content, "") for i in range(3)]
 for article, page in zip(articles, pages):
     article.page = page
 article0 = articles[0]
