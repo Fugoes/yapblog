@@ -1,5 +1,3 @@
-__all__ = ["index"]
-
 from flask import render_template, Markup, redirect
 from yapblog import app, config, db
 from yapblog.models import Article, Tag, Category
@@ -24,11 +22,6 @@ def index():
         sidebar=gen_sidebar()
     )
 
-@app.route("/welcome", methods=["GET"])
-def welcome():
-    return render_template(
-        "welcome.html"
-    )
 
 @app.route("/<int:year>/<int:month>/<string:title>", methods=["GET"])
 def article_year_month_title(year, month, title):
