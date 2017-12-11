@@ -83,6 +83,24 @@ def categories_get():
                            sidebar=gen_sidebar())
 
 
+@app.route("/categories/<string:category_name>", methods=["GET"])
+def categories_category_name(category_name):
+    category = Category.query.filter_by(name_=category_name).first()
+    category_and_articles = []
+    if category is None:
+        return render_template("not_found.html", text="")
+    else:
+        articles = category.articles
+        count = len(articles)
+        if count > 0:
+            category_and_articles.append((category, articles))
+        return render_template("categories.html",
+                               category_and_articles=category_and_articles,
+                               title="Categories",
+                               navbar=get_navbar("Categories"),
+                               sidebar=gen_sidebar())
+
+
 @app.route("/archives/<int:year>/<int:month>", methods=["GET"])
 def archives_year_month_get(year, month):
     articles = Article.query.filter(Article.date_time_.between("%04d-%02d" % (year, month),
