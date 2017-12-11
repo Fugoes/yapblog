@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block js %}
+{% endblock %}
+{% block content %}
+    {% for (category, articles) in category_and_articles %}
+        <h3>{{ category.name_ }}</h3>
+        {% include "element/post.html" %}
+    {% endfor %}
+{% endblock %}

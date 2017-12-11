@@ -2,7 +2,7 @@ __all__ = ["index"]
 
 from flask import render_template, Markup, redirect
 from yapblog import app, config, db
-from yapblog.models import Article, Tag
+from yapblog.models import Article, Tag, Category
 from yapblog.lib.page import SideBar, get_navbar, get_archives, archives_data
 
 
@@ -65,6 +65,21 @@ def tags_get():
                            tag_and_articles=tag_and_articles,
                            title="Tags",
                            navbar=get_navbar("Tags"),
+                           sidebar=gen_sidebar())
+
+
+@app.route("/categories", methods=["GET"])
+def categories_get():
+    category_and_articles = []
+    for category in Category.query.all():
+        articles = category.articles
+        count = len(articles)
+        if count > 0:
+            category_and_articles.append((category, articles))
+    return render_template("categories.html",
+                           category_and_articles=category_and_articles,
+                           title="Categories",
+                           navbar=get_navbar("Categories"),
                            sidebar=gen_sidebar())
 
 

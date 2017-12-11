@@ -143,13 +143,11 @@ def api_article_get():
     }
     """
     articles = Article.query.order_by(db.desc(Article.date_time_)).all()
-    return ok(articles=[
-        {
-            "id": article.id_,
-            "title": article.title_,
-            "date_time": "%04d-%02d-%02d" % (article.date_time_.year, article.date_time_.month, article.date_time_.day)
-        }
-        for article in articles])
+    return ok(articles=[{
+        "id": article.id_,
+        "title": article.title_,
+        "date_time": "%04d-%02d-%02d" % (article.date_time_.year, article.date_time_.month, article.date_time_.day)
+    } for article in articles])
 
 
 @app.route("/api/article", methods=["POST"])
@@ -263,8 +261,8 @@ def api_article_article_id_patch(article_id):
     try:
         category_name = data["category"]
         if category_name is not None:
-            category = Category.query.filter_by(name_=category_name)
-            if category is not None:
+            category = Category.query.filter_by(name_=category_name).first()
+            if category is None:
                 category = Category(category_name)
             article.category = category
     except KeyError:

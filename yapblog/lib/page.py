@@ -1,7 +1,7 @@
 from flask_login import current_user
 from itertools import groupby
 from copy import deepcopy
-from yapblog import config, db
+from yapblog import config
 from yapblog.models import Tag, Article
 
 
@@ -71,6 +71,7 @@ navbar_anonymous = NavBar(
         NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/tags", text="Tags"),
         NavBar.Item(is_active=False, link="/archives", text="Archives"),
+        NavBar.Item(is_active=False, link="/categories", text="Categories"),
     ],
     right_items=[
         NavBar.Item(is_active=False, link="/login", text="Login"),
@@ -84,6 +85,7 @@ navbar_user = NavBar(
         NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/tags", text="Tags"),
         NavBar.Item(is_active=False, link="/archives", text="Archives"),
+        NavBar.Item(is_active=False, link="/categories", text="Categories"),
     ],
     right_items=[
         NavBar.Item(is_active=False, link="/logout", text="Logout"),
@@ -96,6 +98,7 @@ navbar_admin = NavBar(
         NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/tags", text="Tags"),
         NavBar.Item(is_active=False, link="/archives", text="Archives"),
+        NavBar.Item(is_active=False, link="/categories", text="Categories"),
         NavBar.Item(is_active=False, link="/admin", text="Admin"),
     ],
     right_items=[
