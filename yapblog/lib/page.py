@@ -70,6 +70,7 @@ navbar_anonymous = NavBar(
     left_items=[
         NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/tags", text="Tags"),
+        NavBar.Item(is_active=False, link="/archives", text="Archives"),
     ],
     right_items=[
         NavBar.Item(is_active=False, link="/login", text="Login"),
@@ -82,6 +83,7 @@ navbar_user = NavBar(
     left_items=[
         NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/tags", text="Tags"),
+        NavBar.Item(is_active=False, link="/archives", text="Archives"),
     ],
     right_items=[
         NavBar.Item(is_active=False, link="/logout", text="Logout"),
@@ -93,6 +95,7 @@ navbar_admin = NavBar(
     left_items=[
         NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/tags", text="Tags"),
+        NavBar.Item(is_active=False, link="/archives", text="Archives"),
         NavBar.Item(is_active=False, link="/admin", text="Admin"),
     ],
     right_items=[
@@ -117,10 +120,15 @@ def get_navbar(active):
     return navbar
 
 
-def get_archives():
-    items = []
+def archives_data():
     for (year, month), group in groupby(Article.query.order_by(Article.date_time_).all(),
                                         lambda x: (x.date_time_.year, x.date_time_.month)):
+        yield (year, month), group
+
+
+def get_archives():
+    items = []
+    for (year, month), group in archives_data():
         count = len(list(group))
         items.append(SideBar.CollapsibleList.Item(link="/archives/%04d/%02d" % (year, month),
                                                   text="%04d-%02d (%d)" % (year, month, count)))
