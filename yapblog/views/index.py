@@ -3,12 +3,13 @@ __all__ = ["index"]
 from flask import render_template, Markup, redirect
 from yapblog import app, config, db
 from yapblog.models import Article, Tag, Category
-from yapblog.lib.page import SideBar, get_navbar, get_archives, archives_data
+from yapblog.lib.page import SideBar, get_navbar, get_archives, archives_data, get_categories
 
 
 def gen_sidebar():
     return SideBar(items=[
         SideBar.gen_tag_list(),
+        get_categories(),
         get_archives(),
     ])
 
