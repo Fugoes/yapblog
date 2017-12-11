@@ -69,11 +69,11 @@ class Article(db.Model):
     markdown_content_ = db.Column("markdown_content", db.Text)
     # Foreign key
     page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=True)
-    category_id_ = db.Column("category_id", db.Integer, db.ForeignKey("categories"), nullable=True)
+    category_id_ = db.Column("category_id", db.Integer, db.ForeignKey("categories.id"), nullable=True)
     # Relationship
     page = db.relationship("Page", uselist=False)
     tags = db.relationship("Tag", secondary=tag_and_article, back_populates="articles")
-    category = db.relationship("Category", back_populates="categories", uselist=False)
+    category = db.relationship("Category", back_populates="articles", uselist=False)
 
     def __init__(self, title, date_time, html_content, markdown_content):
         self.title_ = title
