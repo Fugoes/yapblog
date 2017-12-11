@@ -2,7 +2,7 @@ from flask_login import current_user
 from itertools import groupby
 from copy import deepcopy
 from yapblog import config
-from yapblog.models import Tag, Article
+from yapblog.models import Tag, Article, Category
 
 
 class NavBar(object):
@@ -137,4 +137,18 @@ def get_archives():
                                                   text="%04d-%02d (%d)" % (year, month, count)))
     return SideBar.CollapsibleList(id="archives",
                                    title="Archives",
+                                   items=items)
+
+
+def get_categories():
+    items = []
+    for category in Category.query.all():
+        name = category.name_
+        articles = category.articles
+        count = len(articles)
+        if count > 0:
+            items.append(SideBar.CollapsibleList.Item(link="/categories/%s" % name,
+                                                      text="%s (%d)" % (name, count)))
+    return SideBar.CollapsibleList(id="categories",
+                                   title="Categories",
                                    items=items)
