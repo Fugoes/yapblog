@@ -4,8 +4,17 @@
             <a class="navbar-brand" href="/">{{ navbar.title }}</a>
         </div>
         <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
             {% for item in navbar.items %}
-                {% if item.is_active %}
+                {% if item.text == "Admin" %}
+                    <li><a href="/admin">Admin</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            {% for item in navbar.items %}
+                {% if item.text == "Admin" %}
+                {% elif item.is_active %}
                     <li class="active"><a href="{{ item.link }}">{{ item.text }}</a></li>
                 {% else %}
                     <li><a href="{{ item.link }}">{{ item.text }}</a></li>
