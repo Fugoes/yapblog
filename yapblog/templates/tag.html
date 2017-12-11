@@ -3,5 +3,8 @@
 {% block js %}
 {% endblock %}
 {% block content %}
-    {% include "element/post.html" %}
+    {% for (tag, count, articles) in tag_and_articles %}
+        <h3>{{ tag.name_ }}</h3>
+        {% include "element/post.html" %}
+    {% endfor %}
 {% endblock %}
