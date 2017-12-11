@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 
 
 @app.route("/api/comment/<int:comment_id>", methods=["GET"])
-def api_comment_comment_id(comment_id):
+def api_comment_comment_id_get(comment_id):
     """
 
     :param comment_id:
@@ -20,7 +20,7 @@ def api_comment_comment_id(comment_id):
     if comment is None:
         return not_ok()
     if comment.is_deleted_:
-        comment_text = "Comment already deleted"
+        comment_text = "Deleted Comment"
     else:
         comment_text = comment.text_
     if comment.user is None:
@@ -31,8 +31,8 @@ def api_comment_comment_id(comment_id):
               author_name=author_name)
 
 
-@app.route("/api/comment/delete/<int:comment_id>", methods=["DELETE"])
-def api_comment_delete_comment_id(comment_id):
+@app.route("/api/comment/<int:comment_id>", methods=["DELETE"])
+def api_comment_comment_id_delete(comment_id):
     comment = Comment.query.filter_by(id_=comment_id).first()
     if comment is None:
         return not_ok()
