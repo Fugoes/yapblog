@@ -35,7 +35,8 @@ r = requests.post(url, json={
     "title": "Hello World",
     "date_time": "2017-1-1",
     "markdown_content": content,
-    "tags": ["YapBlog", "Test"]
+    "tags": ["YapBlog", "Test"],
+    "category": None,
 })
 result = json.loads(r.content.decode())
 print(result)
@@ -46,7 +47,8 @@ for i in range(4):
         "title": "Hello World Again%d" % i,
         "date_time": "2017-1-19",
         "markdown_content": content,
-        "tags": ["YapBlog"]
+        "tags": ["YapBlog"],
+        "category": None,
     })
     result = json.loads(r.content.decode())
     print(result)
