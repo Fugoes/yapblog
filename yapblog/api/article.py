@@ -51,9 +51,12 @@ def api_article_article_id_get_markdown_content(article_id):
     if article is None:
         return not_ok()
     date_time = article.date_time_
+    category = article.category
+    if category is not None:
+        category = category.name_
     return ok(title=article.title_,
               tags=[tag.name_ for tag in article.tags],
-              category=article.category.name_,
+              category=category,
               date_time="%04d-%02d-%02d" % (date_time.year, date_time.month, date_time.day),
               markdown_content=article.markdown_content_,
               page_id=article.page_id_)
