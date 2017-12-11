@@ -3,7 +3,7 @@ __all__ = ["index"]
 from flask import render_template, Markup, redirect
 from yapblog import app, config, db
 from yapblog.models import Article, Tag
-from yapblog.lib.page import NavBar, SideBar, get_navbar, get_archives
+from yapblog.lib.page import SideBar, get_navbar, get_archives
 
 
 def gen_sidebar():

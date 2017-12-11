@@ -14,7 +14,8 @@ class NavBar(object):
 
     def __init__(self, **kwargs):
         self.title = kwargs["title"]
-        self.items = kwargs["items"]
+        self.left_items = kwargs["left_items"]
+        self.right_items = kwargs["right_items"]
 
 
 class SideBar(object):
@@ -66,25 +67,34 @@ class SideBar(object):
 
 navbar_anonymous = NavBar(
     title=config.WEBSITE_NAME,
-    items=[
+    left_items=[
+        NavBar.Item(is_active=False, link="/", text="Home"),
+    ],
+    right_items=[
         NavBar.Item(is_active=False, link="/login", text="Login"),
         NavBar.Item(is_active=False, link="/register", text="Register"),
-    ]
+    ],
 )
 
 navbar_user = NavBar(
     title=config.WEBSITE_NAME,
-    items=[
+    left_items=[
+        NavBar.Item(is_active=False, link="/", text="Home"),
+    ],
+    right_items=[
         NavBar.Item(is_active=False, link="/logout", text="Logout"),
-    ]
+    ],
 )
 
 navbar_admin = NavBar(
     title=config.WEBSITE_NAME,
-    items=[
-        NavBar.Item(is_active=False, link="/logout", text="Logout"),
+    left_items=[
+        NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/admin", text="Admin"),
-    ]
+    ],
+    right_items=[
+        NavBar.Item(is_active=False, link="/logout", text="Logout"),
+    ],
 )
 
 
@@ -97,7 +107,9 @@ def get_navbar(active):
         else:
             navbar = navbar_user
     navbar = deepcopy(navbar)
-    for item in navbar.items:
+    for item in navbar.left_items:
+        item.is_active = item.text == active
+    for item in navbar.right_items:
         item.is_active = item.text == active
     return navbar
 
