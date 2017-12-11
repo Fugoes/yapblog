@@ -69,6 +69,7 @@ navbar_anonymous = NavBar(
     title=config.WEBSITE_NAME,
     left_items=[
         NavBar.Item(is_active=False, link="/", text="Home"),
+        NavBar.Item(is_active=False, link="/tags", text="Tags"),
     ],
     right_items=[
         NavBar.Item(is_active=False, link="/login", text="Login"),
@@ -80,6 +81,7 @@ navbar_user = NavBar(
     title=config.WEBSITE_NAME,
     left_items=[
         NavBar.Item(is_active=False, link="/", text="Home"),
+        NavBar.Item(is_active=False, link="/tags", text="Tags"),
     ],
     right_items=[
         NavBar.Item(is_active=False, link="/logout", text="Logout"),
@@ -90,6 +92,7 @@ navbar_admin = NavBar(
     title=config.WEBSITE_NAME,
     left_items=[
         NavBar.Item(is_active=False, link="/", text="Home"),
+        NavBar.Item(is_active=False, link="/tags", text="Tags"),
         NavBar.Item(is_active=False, link="/admin", text="Admin"),
     ],
     right_items=[

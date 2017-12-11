@@ -44,14 +44,28 @@ def tags_tag_name(tag_name):
     tag = Tag.query.filter_by(name_=tag_name).first()
     if tag is None:
         return redirect("/", code=404)
-    return render_template(
-        "tag.html",
-        articles=tag.articles,
-        tag_id=tag.id_,
-        title=tag_name,
-        navbar=get_navbar(None),
-        sidebar=gen_sidebar()
-    )
+    return render_template("tag_by_name.html",
+                           articles=tag.articles,
+                           tag_id=tag.id_,
+                           title=tag_name,
+                           navbar=get_navbar("Tags"),
+                           sidebar=gen_sidebar())
+
+
+@app.route("/tags", methods=["GET"])
+def tags_get():
+    tags = Tag.query.all()
+    tag_and_articles = []
+    for tag in tags:
+        articles = tag.articles
+        count = len(articles)
+        if count > 0:
+            tag_and_articles.append((tag, count, articles))
+    return render_template("tag.html",
+                           tag_and_articles=tag_and_articles,
+                           title="Tags",
+                           navbar=get_navbar("Tags"),
+                           sidebar=gen_sidebar())
 
 
 @app.route("/archives/<int:year>/<int:month>", methods=["GET"])
