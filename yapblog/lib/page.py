@@ -70,8 +70,8 @@ navbar_anonymous = NavBar(
     left_items=[
         NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/tags", text="Tags"),
-        NavBar.Item(is_active=False, link="/archives", text="Archives"),
         NavBar.Item(is_active=False, link="/categories", text="Categories"),
+        NavBar.Item(is_active=False, link="/archives", text="Archives"),
     ],
     right_items=[
         NavBar.Item(is_active=False, link="/login", text="Login"),
@@ -84,8 +84,8 @@ navbar_user = NavBar(
     left_items=[
         NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/tags", text="Tags"),
-        NavBar.Item(is_active=False, link="/archives", text="Archives"),
         NavBar.Item(is_active=False, link="/categories", text="Categories"),
+        NavBar.Item(is_active=False, link="/archives", text="Archives"),
     ],
     right_items=[
         NavBar.Item(is_active=False, link="/logout", text="Logout"),
@@ -97,8 +97,8 @@ navbar_admin = NavBar(
     left_items=[
         NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/tags", text="Tags"),
-        NavBar.Item(is_active=False, link="/archives", text="Archives"),
         NavBar.Item(is_active=False, link="/categories", text="Categories"),
+        NavBar.Item(is_active=False, link="/archives", text="Archives"),
         NavBar.Item(is_active=False, link="/admin", text="Admin"),
     ],
     right_items=[

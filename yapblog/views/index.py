@@ -43,14 +43,19 @@ def article_year_month_title(year, month, title):
 @app.route("/tags/<string:tag_name>", methods=["GET"])
 def tags_tag_name(tag_name):
     tag = Tag.query.filter_by(name_=tag_name).first()
+    tag_and_articles = []
     if tag is None:
         return redirect("/", code=404)
-    return render_template("tag_by_name.html",
-                           articles=tag.articles,
-                           tag_id=tag.id_,
-                           title=tag_name,
-                           navbar=get_navbar("Tags"),
-                           sidebar=gen_sidebar())
+    else:
+        articles = tag.articles
+        count = len(articles)
+        if count > 0:
+            tag_and_articles.append((tag, count, articles))
+        return render_template("tags.html",
+                               tag_and_articles=tag_and_articles,
+                               title="Tags",
+                               navbar=get_navbar("Tags"),
+                               sidebar=gen_sidebar())
 
 
 @app.route("/tags", methods=["GET"])
@@ -62,7 +67,7 @@ def tags_get():
         count = len(articles)
         if count > 0:
             tag_and_articles.append((tag, count, articles))
-    return render_template("tag.html",
+    return render_template("tags.html",
                            tag_and_articles=tag_and_articles,
                            title="Tags",
                            navbar=get_navbar("Tags"),
