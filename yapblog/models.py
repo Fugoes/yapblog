@@ -13,7 +13,7 @@ class Category(db.Model):
     id_ = db.Column("id", db.Integer, db.Sequence("category_id_seq"), primary_key=True)
     name_ = db.Column("name", db.String(1024), unique=True, nullable=False)
     # Relationship
-    articles = db.relateionship("Article", back_populates="category", uselist=True)
+    articles = db.relationship("Article", back_populates="category", uselist=True)
 
     def __init__(self, name):
         self.name_ = name

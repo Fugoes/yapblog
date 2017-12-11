@@ -18,7 +18,6 @@ def index():
     return render_template(
         "home.html",
         articles=Article.query.order_by(db.desc(Article.date_time_)).all(),
-        "index.html",
         title=config.WEBSITE_NAME,
         navbar=get_navbar("Home"),
         sidebar=gen_sidebar()
