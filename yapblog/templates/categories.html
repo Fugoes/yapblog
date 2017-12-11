@@ -3,9 +3,8 @@
 {% block js %}
 {% endblock %}
 {% block content %}
-    {% for (year, month), count, articles in time_and_posts %}
-        <h3>{{ year }}-{{ "%02d" % month }}</h3>
-        {{ count }} {% if count == 1 %}post{% else %}posts{% endif %}
+    {% for (category, articles) in category_and_articles %}
+        <h3>{{ category.name_ }}</h3>
         {% include "element/post.html" %}
     {% endfor %}
 {% endblock %}

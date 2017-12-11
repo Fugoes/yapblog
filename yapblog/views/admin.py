@@ -3,7 +3,7 @@ __all__ = ["admin", "admin_article_add", "admin_article"]
 from flask import render_template
 from yapblog import app, config
 from yapblog.models import User, Article
-from yapblog.lib.page import SideBar, NavBar, get_navbar
+from yapblog.lib.page import SideBar, get_navbar
 from yapblog.lib.auth import admin_required
 
 sidebar = SideBar(items=[
