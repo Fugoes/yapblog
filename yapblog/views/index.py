@@ -24,6 +24,11 @@ def index():
         sidebar=gen_sidebar()
     )
 
+@app.route("/welcome", methods=["GET"])
+def welcome():
+    return render_template(
+        "welcome.html"
+    )
 
 @app.route("/<int:year>/<int:month>/<string:title>", methods=["GET"])
 def article_year_month_title(year, month, title):
