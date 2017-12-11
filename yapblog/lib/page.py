@@ -67,7 +67,6 @@ class SideBar(object):
 navbar_anonymous = NavBar(
     title=config.WEBSITE_NAME,
     items=[
-        NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/login", text="Login"),
         NavBar.Item(is_active=False, link="/register", text="Register"),
     ]
@@ -76,7 +75,6 @@ navbar_anonymous = NavBar(
 navbar_user = NavBar(
     title=config.WEBSITE_NAME,
     items=[
-        NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/logout", text="Logout"),
     ]
 )
@@ -84,7 +82,6 @@ navbar_user = NavBar(
 navbar_admin = NavBar(
     title=config.WEBSITE_NAME,
     items=[
-        NavBar.Item(is_active=False, link="/", text="Home"),
         NavBar.Item(is_active=False, link="/logout", text="Logout"),
         NavBar.Item(is_active=False, link="/admin", text="Admin"),
     ]
