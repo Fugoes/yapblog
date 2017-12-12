@@ -1,11 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block js %}
-    <script>
-        $(function () {
-            load_comments(1, "#comments");
-        })
-    </script>
 {% endblock %}
 {% block content %}
     {% include "element/post.html" %}

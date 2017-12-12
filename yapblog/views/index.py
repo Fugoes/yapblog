@@ -32,6 +32,7 @@ def article_year_month_title(year, month, title):
             return render_template("article.html",
                                    title=title,
                                    html_content=Markup(article.html_content_),
+                                   comment=article.page_id_,
                                    navbar=get_navbar(None),
                                    sidebar=gen_sidebar())
     else:
