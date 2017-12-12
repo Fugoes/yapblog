@@ -15,7 +15,7 @@ def gen_sidebar():
 @app.route("/", methods=["GET"])
 def index():
     return render_template(
-        "home.html",
+        "index.html",
         articles=Article.query.order_by(db.desc(Article.date_time_)).all(),
         title=config.WEBSITE_NAME,
         navbar=get_navbar("Home"),
