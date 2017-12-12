@@ -33,12 +33,19 @@
                 });
                 var date_time = $("#article_date").val();
                 var markdown_content = $("#article_markdown_content").val();
+                var img_url = $("#article_img_url").val().trim();
+                var category = $("#article_category").val().trim();
+                if (category.length === 0) {
+                    category = null;
+                }
 
                 var data = {
                     title: title,
                     tags: tags,
+                    category: category,
                     date_time: date_time,
-                    markdown_content: markdown_content
+                    markdown_content: markdown_content,
+                    img_url: img_url
                 };
 
                 $.ajax({
@@ -65,23 +72,31 @@
 {% block content %}
     <h1>Add Article</h1>
     <form id="article_form">
-        <div class="form-group"b>
+        <div class="form-group">
             <label>Title:</label>
             <input class="form-control" id="article_title">
         </div>
         <div class="form-group">
-            <label>Tags:</label>
+            <label>Tags</label>
             <input class="form-control" id="article_tags">
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <input class="form-control" id="article_category">
         </div>
         <div class="form-group">
             <label>Date:</label>
             <input class="form-control" id="article_date">
         </div>
         <div class="form-group">
+            <label>Image URL:</label>
+            <input class="form-control" id="article_img_url">
+        </div>
+        <div class="form-group">
             <label>Content:</label>
             <textarea class="form-control" rows="10" id="article_markdown_content"></textarea>
         </div>
         <div id="msg_box"></div>
-        <button type="submit" class="btn btn-info" id="button">Add</button>
+        <button type="submit" class="btn btn-info" id="button">Submit</button>
     </form>
 {% endblock %}

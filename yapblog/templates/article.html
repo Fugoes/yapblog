@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block js %}
+    <script>
+        $(function () {
+            load_comments();
+        })
+    </script>
 {% endblock %}
 {% block content %}
     {{ html_content }}
