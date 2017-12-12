@@ -52,6 +52,7 @@ function submit_reply(comment_id) {
             success: function (data) {
                 if (data.ok) {
                     $("#comment" + comment_id + " textarea").remove();
+                    button.attr("onclick", "create_reply_box(" + comment_id + ")");
                     button.prop("disabled", false);
                     var li = $("#comment" + comment_id).next();
                     li.append([
