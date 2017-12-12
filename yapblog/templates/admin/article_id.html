@@ -12,6 +12,7 @@
                     $("#article_markdown_content").val(data.markdown_content);
                     $("#article_tags").val(data.tags.toString());
                     $("#article_category").val(data.category.toString());
+                    $("#article_img_url").val(data.img_url);
                 }
             });
             $("#article_form").on("submit", function (ev) {
