@@ -8,6 +8,21 @@
     <script language="JavaScript" type="text/javascript" src="/static/jquery-3.2.1.min.js"></script>
     <script language="JavaScript" type="text/javascript" src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <script src="/static/yapblog.js"></script>
+    <script>
+        {% if page_id %}
+            this_page_id = {{ page_id }};
+        {% else %}
+            this_page_id = null;
+        {% endif %}
+        {% if user %}
+            this_user = {
+                id: {{ user.id_ }},
+                name: "{{ user.name_ }}"
+            };
+        {% else %}
+            this_user = null;
+        {% endif %}
+    </script>
     {% block js %}
     {% endblock %}
 </head>
