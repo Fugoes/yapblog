@@ -31,20 +31,33 @@
 
 .comment-author {
     font-size: 14px;
-    color: #828282;
+    color: #2A7AE2;
 }
 
 .comment-text {
+    font-size: 16px;
 }
 
-.comment {
+.comment-ul {
     width: 100%;
     margin: 0;
-    padding-right: 0px;
-    padding-left: 10px;
-    cursor: pointer;
-    border: 1px solid #e6e6e6;
+    padding: 0;
+    border: none;
     list-style-type: none;
+}
+
+.comment-li {
+    width: 100%;
+    margin: 0;
+    padding-left: 30px;
+    padding-right: 0;
+    border: none;
+    list-style-type: none;
+}
+
+.comment-body {
+    margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 .full {

@@ -1,33 +1,37 @@
 var this_page_id;
 
+function gen_comment_body(comment_id) {
+    return [
+        "<div class='comment-body' id='comment" + comment_id + "'>",
+        "   <span class='comment-author'></span> said:",
+        "   <div class='comment-text'></div>",
+        "   <button class='btn btn-link btn-xs' style='padding: 0px' onclick='create_reply_box(" + comment_id + ")'>",
+        "       Reply",
+        "   </button>",
+        "</div>"
+    ].join("\n");
+}
+
 function gen_list(p, id_to_replies) {
-    var pre = [
-        "<li id='comment" + p + "'>",
-        "   <div class='comment-author'></div>",
-        "   <div class='comment-text'></div>"
-    ].join("\n");
-    var post = [
-        "   <button onclick='create_reply_box(" + p + ")'>Reply</button>",
-        "</li>"
-    ].join("\n");
+    var pre = gen_comment_body(p) + "<li class='comment-li'>";
+    var post = "</li>";
     if (p in id_to_replies) {
         // have replies
         var inner = "";
         for (var i in id_to_replies[p]) {
             inner += gen_list(id_to_replies[p][i], id_to_replies);
         }
-        return pre + [
-            "   <ul class='comment'>" + inner,
-            "   </ul>"
-        ].join("\n") + post;
+        return pre + "<ul class='comment-ul'>" + inner + "</ul>" + post;
     } else {
-        return pre + post;
+        return pre + "<ul class='comment-ul'>" + "</ul>" + post;
     }
 }
 
 function create_reply_box(comment_id) {
     $("#comment" + comment_id + " button").attr("onclick", "submit_reply(" + comment_id + ")");
-    $("#comment" + comment_id).append("<textarea class='form-control' rows='5' id='comment" + comment_id + "'></textarea>");
+    $("#comment" + comment_id).append(
+        "<textarea class='form-control' style='padding-bottom: 10px' rows='3'></textarea>"
+    );
 }
 
 function submit_reply(comment_id) {
@@ -46,7 +50,18 @@ function submit_reply(comment_id) {
             data: JSON.stringify(data),
             dataType: "json",
             success: function (data) {
-                alert(data.id);
+                if (data.ok) {
+                    $("#comment" + comment_id + " textarea").remove();
+                    button.prop("disabled", false);
+                    var li = $("#comment" + comment_id).next();
+                    li.append([
+                        gen_comment_body(data.id),
+                        "<li class='comment-li'>",
+                        "   <ul class='comment-ul'></ul>",
+                        "</li>"
+                    ].join("\n"));
+                    load_comment(data.id);
+                }
             }
         });
     } else {
@@ -92,7 +107,7 @@ function load_comments(page_id, comments_box) {
                     }
                 }
             }
-            $(comments_box).html("<ul class='comment'></ul>");
+            $(comments_box).html("<ul class='comment-ul'></ul>");
             var box = $(comments_box + " ul");
             for (var i in roots) {
                 var t = gen_list(roots[i], id_to_replies);
