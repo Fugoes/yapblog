@@ -1,3 +1,4 @@
+import datetime
 from flask import render_template, Markup, redirect
 from flask_login import current_user
 from yapblog import app, config, db
@@ -112,8 +113,10 @@ def categories_category_name(category_name):
 
 @app.route("/archives/<int:year>/<int:month>", methods=["GET"])
 def archives_year_month_get(year, month):
-    articles = Article.query.filter(Article.date_time_.between("%04d-%02d" % (year, month),
-                                                               "%04d-%02d" % (year, month + 1))).all()
+    articles = Article.query.filter(Article.date_time_.between(
+        datetime.datetime(year, month, 1, 0, 0, 0),
+        datetime.datetime(year, month + 1, 1, 0, 0, 0) if month < 12 else datetime.datetime(
+            year + 1, 1, 1, 0, 0, 0) - datetime.timedelta(days=1))).all()
     count = len(articles)
     return render_template("archives.html",
                            time_and_posts=[((year, month), count, articles)],

@@ -8,7 +8,7 @@ __all__ = ["api_article_article_id_get", "api_article_article_id_delete", "api_a
 import datetime
 from flask import request
 from sqlalchemy.exc import IntegrityError
-from yapblog import app, db
+from yapblog import app, db, config
 from yapblog.models import Article, Page, Tag, Category
 from yapblog.lib.api import ok, not_ok
 from yapblog.lib.format import markdown_to_html
@@ -189,9 +189,14 @@ def api_article_post():
         markdown_content = data["markdown_content"]
         category = data["category"]
         tags = data["tags"]
-        img_url = data["img_url"]
     except KeyError:
         return not_ok()
+    try:
+        img_url = data["img_url"]
+        if len(img_url) == 0:
+            img_url = config.DEFAULT_BACKGROUND
+    except KeyError:
+        img_url = config.DEFAULT_BACKGROUND
     html_content = markdown_to_html(markdown_content)
     new_article = Article(title, date_time, html_content, markdown_content, img_url)
     new_article.page = Page()
