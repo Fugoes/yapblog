@@ -19,7 +19,7 @@
                     success: function (result) {
                         if (result.ok) {
                             $("#msg_box").text("Successfully registered!");
-                            self.location="login";
+                            location.href="/";
                         } else {
                             $("#msg_box").text(result.msg);
                         }

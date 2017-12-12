@@ -19,7 +19,8 @@
                     if (data.ok) {
                         msg_box.attr("class", "alert alert-success fade in");
                         msg_box.html("<strong>Success!</strong>");
-                        window.history.back();
+                     //   location.href=document.referrer;
+                        location.href="/";
                     } else {
                         if (data.msg === "already logged in") {
                             msg_box.attr("class", "alert alert-info fade in");
