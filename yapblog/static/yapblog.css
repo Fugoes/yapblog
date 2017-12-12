@@ -1,3 +1,7 @@
+body {
+    background: #f1f1f1;
+}
+
 .tag-container {
     margin: 10px;
 }
@@ -6,10 +10,35 @@
     margin: 4px;
 }
 
+.post {
+    background: #ffffff;
+    box-shadow: 2px 2px 2px #888888;
+    margin: 30px 0;
+}
+
+.post-img-div {
+    overflow: hidden;
+    padding-bottom: 30%;
+    width: 100%;
+    height: 0;
+}
+
+.post-img {
+    transition: all 1s;
+}
+
+.post-img:hover {
+    transform: scale(1.4);
+}
+
+.post-content {
+    padding: 10px 20px;
+}
+
 .post-meta {
     font-size: 14px;
     color: #828282;
-    margin: 0;
+    padding-top: 10px;
 }
 
 .post-link {
@@ -18,33 +47,70 @@
     margin: 0;
 }
 
-.post-list {
-    margin-left: 0;
+.post-li {
     list-style: none;
+    margin-left: 0;
+}
+
+.post-ul {
+    list-style-position: inside;
+    margin-left: 0;
 }
 
 .post-title {
     margin-top: 5px;
-    margin-bottom: 20px;
-    list-style: none;
+    margin-bottom: 2px;
+}
+
+.post-title-link {
+    color: #404040;
+}
+
+.post-title-link:hover {
+    text-decoration: none;
+    color: #16A085;
+}
+
+.post-tag {
+    font-size: 10pt;
+    color: #828282;
+    margin-right: 5px;
+}
+
+.post-tag:hover {
+    color: #000000;
+    text-decoration: none;
 }
 
 .comment-author {
     font-size: 14px;
-    color: #828282;
+    color: #2A7AE2;
 }
 
 .comment-text {
+    font-size: 16px;
 }
 
-.comment {
+.comment-ul {
     width: 100%;
     margin: 0;
-    padding-right: 0px;
-    padding-left: 10px;
-    cursor: pointer;
-    border: 1px solid #e6e6e6;
+    padding: 0;
+    border: none;
     list-style-type: none;
+}
+
+.comment-li {
+    width: 100%;
+    margin: 0;
+    padding-left: 30px;
+    padding-right: 0;
+    border: none;
+    list-style-type: none;
+}
+
+.comment-body {
+    margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 .full {
