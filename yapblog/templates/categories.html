@@ -5,6 +5,6 @@
 {% block content %}
     {% for (category, articles) in category_and_articles %}
         <h3>{{ category.name_ }}</h3>
-        {% include "element/post.html" %}
+        {% include "element/post-list.html" %}
     {% endfor %}
 {% endblock %}

@@ -44,7 +44,8 @@ def api_article_article_id_get_markdown_content(article_id):
         "title": <article.title>,
         "date_time": <article.date>,
         "markdown_content": <article.markdown_content>,
-        "page_id": <article.page_id>
+        "page_id": <article.page_id>,
+        "img_url": <article.img_url>
     }
     """
     article = Article.query.filter_by(id_=article_id).first()
@@ -59,6 +60,7 @@ def api_article_article_id_get_markdown_content(article_id):
               category=category,
               date_time="%04d-%02d-%02d" % (date_time.year, date_time.month, date_time.day),
               markdown_content=article.markdown_content_,
+              img_url=article.img_url_,
               page_id=article.page_id_)
 
 
@@ -187,10 +189,11 @@ def api_article_post():
         markdown_content = data["markdown_content"]
         category = data["category"]
         tags = data["tags"]
+        img_url = data["img_url"]
     except KeyError:
         return not_ok()
     html_content = markdown_to_html(markdown_content)
-    new_article = Article(title, date_time, html_content, markdown_content)
+    new_article = Article(title, date_time, html_content, markdown_content, img_url)
     new_article.page = Page()
     for tag in get_tags_from_tag_names(tags):
         new_article.tags.append(tag)
@@ -222,6 +225,7 @@ def api_article_article_id_patch(article_id):
             "markdown_content": "",
             "tags": ["tagA"],
             "category": "category"
+            "img_url":
         }
 
     :return:
@@ -265,6 +269,10 @@ def api_article_article_id_patch(article_id):
             if category is None:
                 category = Category(category_name)
             article.category = category
+    except KeyError:
+        pass
+    try:
+        article.img_url_ = data["img_url"]
     except KeyError:
         pass
     try:

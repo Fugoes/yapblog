@@ -5,6 +5,7 @@ Database interface
 __all__ = ["Tag", "Page", "Article", "Comment", "User", "Category"]
 
 from yapblog import db
+from yapblog import config
 
 
 class Category(db.Model):
@@ -67,6 +68,7 @@ class Article(db.Model):
     date_time_ = db.Column("date_time", db.DateTime)
     html_content_ = db.Column("html_content", db.Text)
     markdown_content_ = db.Column("markdown_content", db.Text)
+    img_url_ = db.Column("img_url", db.String(1024))
     # Foreign key
     page_id_ = db.Column("page_id", db.Integer, db.ForeignKey("pages.id"), nullable=True)
     category_id_ = db.Column("category_id", db.Integer, db.ForeignKey("categories.id"), nullable=True)
@@ -75,11 +77,12 @@ class Article(db.Model):
     tags = db.relationship("Tag", secondary=tag_and_article, back_populates="articles")
     category = db.relationship("Category", back_populates="articles", uselist=False)
 
-    def __init__(self, title, date_time, html_content, markdown_content):
+    def __init__(self, title, date_time, html_content, markdown_content, img_url=None):
         self.title_ = title
         self.date_time_ = date_time
         self.html_content_ = html_content
         self.markdown_content_ = markdown_content
+        self.img_url_ = img_url if img_url else config.DEFAULT_BACKGROUND
 
     def __str__(self):
         return "<Article id=%d title='%s'>" % (self.id_, self.title_)

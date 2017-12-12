@@ -1,12 +1,24 @@
-<ul class="post-list" id="post-list">
-    {% for article in articles %}
-        <li>
-            <span class="post-meta">{{ article.date_time_.strftime("%B %d, %Y %a") }}</span>
-            <h3 class="post-title">
-                <a href="/{{ "%04d" % article.date_time_.year }}/{{ "%02d" % article.date_time_.month }}/{{ article.title_ }}">
-                    {{ article.title_ }}
-                </a>
-            </h3>
-        </li>
-    {% endfor %}
-</ul>
+<div class="post">
+    <div class="post-img-div">
+        <a href="/{{ "%04d" % article.date_time_.year }}/{{ "%02d" % article.date_time_.month }}/{{ article.title_ }}">
+            <img class="post-img" src="{{ article.img_url_ }}">
+        </a>
+    </div>
+    <div class="post-content">
+        <div class="post-meta">{{ article.date_time_.strftime("%B %d, %Y %a") }}
+            {% if article.category %}
+                • <a class="post-tag" href="/categories/{{ article.category.name_ }}">{{ article.category.name_ }}</a>
+            {% endif %}
+        </div>
+        <h3 class="post-title">
+            <a class="post-title-link"
+               href="/{{ "%04d" % article.date_time_.year }}/{{ "%02d" % article.date_time_.month }}/{{ article.title_ }}">
+                {{ article.title_ }}
+            </a>
+        </h3>
+        {% for tag in article.tags %}
+            <a class="post-tag" href="/tags/{{ tag.name_ }}"><strong>#</strong><I>{{ tag.name_ }}</I></a>
+        {% endfor %}
+        <p></p>
+    </div>
+</div>
