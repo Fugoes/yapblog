@@ -14,8 +14,11 @@ def print_help():
 
 if len(argv) == 2:
     if argv[1] == "create-tables":
+
         from yapblog import db
         from yapblog.models import *
+
+        db.drop_all()
 
         db.create_all()
         db.session.add(User(name=config.ADMIN_USER_NAME,
