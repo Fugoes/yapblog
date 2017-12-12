@@ -19,6 +19,10 @@
                     if (data.ok) {
                         msg_box.attr("class", "alert alert-success fade in");
                         msg_box.html("<strong>Success!</strong>");
+                        $("#login_button").prop("disabled", false);
+                        setTimeout(function () {
+                            location.href = document.referrer;
+                        }, 500);
                     } else {
                         if (data.msg === "already logged in") {
                             msg_box.attr("class", "alert alert-info fade in");
@@ -42,7 +46,6 @@
                 button.prop("disabled", true);
                 ev.preventDefault();
                 do_login();
-                button.prop("disabled", false);
             });
         });
     </script>
