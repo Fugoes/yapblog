@@ -10,12 +10,12 @@
                 • <a class="post-tag" href="/categories/{{ article.category.name_ }}">{{ article.category.name_ }}</a>
             {% endif %}
         </div>
-        <h3 class="post-title">
+        <h1 class="post-title">
             <a class="post-title-link"
                href="/{{ "%04d" % article.date_time_.year }}/{{ "%02d" % article.date_time_.month }}/{{ article.title_ }}">
                 {{ article.title_ }}
             </a>
-        </h3>
+        </h1>
         {% for tag in article.tags %}
             <a class="post-tag" href="/tags/{{ tag.name_ }}"><strong>#</strong><I>{{ tag.name_ }}</I></a>
         {% endfor %}

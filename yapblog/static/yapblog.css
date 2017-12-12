@@ -159,3 +159,27 @@ body {
 img {
     max-width: 100%;
 }
+
+h1 {
+    font-size: 30px;
+}
+
+h2 {
+    font-size: 27px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 21px;
+}
+
+h5 {
+    font-size: 18px;
+}
+
+h6 {
+    font-size: 15px;
+}

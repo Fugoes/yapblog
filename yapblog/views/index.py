@@ -32,6 +32,7 @@ def article_year_month_title(year, month, title):
         if date.year == year and date.month == month:
             return render_template("article.html",
                                    title=title,
+                                   article=article,
                                    html_content=Markup(article.html_content_),
                                    page_id=article.page_id_,
                                    user=None if current_user.is_anonymous else current_user,
