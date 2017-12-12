@@ -8,9 +8,9 @@
                 if (result.ok) {
                     msg_box.attr("class", "alert alert-info fade in");
                     msg_box.html("<strong>Logout successfully!</strong>");
-                    setTimeout(1000, function () {
-                        window.location.replace("/");
-                    });
+                    setTimeout(function () {
+                        window.location.href = "/";
+                    }, 1000);
                 } else {
                     msg_box.attr("class", "alert alert-warning fade in");
                     msg_box.html("<strong>Logout failed!</strong>");

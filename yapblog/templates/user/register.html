@@ -19,6 +19,9 @@
                     success: function (result) {
                         if (result.ok) {
                             $("#msg_box").text("Successfully registered!");
+                            setTimeout(function () {
+                                location.href = "/login";
+                            }, 1000);
                         } else {
                             $("#msg_box").text(result.msg);
                         }
