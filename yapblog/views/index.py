@@ -1,4 +1,5 @@
 from flask import render_template, Markup, redirect
+from flask_login import current_user
 from yapblog import app, config, db
 from yapblog.models import Article, Tag, Category
 from yapblog.lib.page import SideBar, get_navbar, get_archives, archives_data, get_categories
@@ -32,7 +33,9 @@ def article_year_month_title(year, month, title):
             return render_template("article.html",
                                    title=title,
                                    html_content=Markup(article.html_content_),
-                                   comment=article.page_id_,
+                                   page_id=article.page_id_,
+                                   user=None if current_user.is_anonymous else current_user,
+                                   comment=True,
                                    navbar=get_navbar(None),
                                    sidebar=gen_sidebar())
     else:

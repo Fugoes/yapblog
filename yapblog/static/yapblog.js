@@ -1,11 +1,12 @@
 var this_page_id;
+var this_user;
 
 function gen_comment_body(comment_id) {
     return [
         "<div class='comment-body' id='comment" + comment_id + "'>",
         "   <span class='comment-author'></span> said:",
         "   <div class='comment-text'></div>",
-        "   <button class='btn btn-link btn-xs' style='padding: 0px' onclick='create_reply_box(" + comment_id + ")'>",
+        "   <button class='btn btn-link btn-xs' style='padding: 0' onclick='create_reply_box(" + comment_id + ")'>",
         "       Reply",
         "   </button>",
         "</div>"
@@ -36,13 +37,17 @@ function delete_reply_box(comment_id) {
 }
 
 function create_reply_box(comment_id) {
-    $("#comment" + comment_id + " button").attr("onclick", "submit_reply(" + comment_id + ")");
-    $("#comment" + comment_id).append([
-        "   <button class='btn btn-link btn-xs' style='padding: 0px' onclick='delete_reply_box(" + comment_id + ")'>",
-        "       Cancel",
-        "   </button>",
-        "<textarea class='form-control' style='padding-bottom: 10px' rows='3'></textarea>"
-    ].join("\n"));
+    if (this_user === null) {
+        window.location.href = "/login";
+    } else {
+        $("#comment" + comment_id + " button").attr("onclick", "submit_reply(" + comment_id + ")");
+        $("#comment" + comment_id).append([
+            "   <button class='btn btn-link btn-xs' style='padding: 0' onclick='delete_reply_box(" + comment_id + ")'>",
+            "       Cancel",
+            "   </button>",
+            "<textarea class='form-control' style='padding-bottom: 10px' rows='3'></textarea>"
+        ].join("\n"));
+    }
 }
 
 function submit_reply(comment_id) {
@@ -72,7 +77,9 @@ function submit_reply(comment_id) {
                             "</li>"
                         ].join("\n"));
                         load_comment(data.id);
-                        $("html, body").animate({scrollTop: $("#comment" + data.id).offset().top - $(window).height() / 3}, 1000);
+                        $("html, body").animate({
+                            scrollTop: $("#comment" + data.id).offset().top - $(window).height() / 3
+                        }, 1000);
                     }
                 }
             });
@@ -80,6 +87,10 @@ function submit_reply(comment_id) {
             button.prop("disabled", false);
         }
     } else {
+        if (this_user === null) {
+            window.location.href = "/login";
+            return;
+        }
         var textarea = $("#comments-root-textarea");
         var button = textarea.next();
         button.prop("disabled", true);
@@ -100,7 +111,9 @@ function submit_reply(comment_id) {
                         $("#comments").first().append(gen_list(data.id, null));
                         load_comment(data.id);
                         button.prop("disabled", false);
-                        $("html, body").animate({scrollTop: $("#comment" + data.id).offset().top - $(window).height() / 3}, 1000);
+                        $("html, body").animate({
+                            scrollTop: $("#comment" + data.id).offset().top - $(window).height() / 3
+                        }, 1000);
                     }
                 }
             });
@@ -124,11 +137,10 @@ function load_comment(comment_id) {
     });
 }
 
-function load_comments(page_id, comments_box) {
-    this_page_id = page_id;
+function load_comments() {
     var comments_meta = $.ajax({
         type: "GET",
-        url: "/api/page/" + page_id + "/comments"
+        url: "/api/page/" + this_page_id + "/comments"
     });
     comments_meta.done(function (data) {
         var roots = [];
@@ -148,8 +160,9 @@ function load_comments(page_id, comments_box) {
                     }
                 }
             }
-            $(comments_box).html("<ul class='comment-ul'></ul>");
-            var box = $(comments_box + " ul");
+            var comment_box = $("#comments");
+            comment_box.html("<ul class='comment-ul'></ul>");
+            var box = comment_box.find("ul");
             for (var i in roots) {
                 var t = gen_list(roots[i], id_to_replies);
                 box.append(t);
