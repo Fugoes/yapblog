@@ -42,7 +42,7 @@ result = json.loads(r.content.decode())
 print(result)
 assert result["ok"]
 
-for i in range(4):
+for i in range(50):
     r = requests.post(url, json={
         "title": "Hello World Again%d" % i,
         "date_time": "2017-1-19",

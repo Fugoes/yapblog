@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import time
 import yapblog.config as config
 
 # Init app
@@ -22,6 +23,11 @@ from yapblog.models import *
 from yapblog.views import *
 # Load all apis
 from yapblog.api import *
+
+@app.before_request
+def before_request():
+    start_time = time.time()
+    g.request_time = lambda: "%.6fs" % (time.time() - start_time)
 
 
 @login_manager.user_loader
