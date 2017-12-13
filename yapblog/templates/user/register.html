@@ -4,6 +4,7 @@
     <script>
         function do_register() {
             var passwd = $("#user_passwd").val();
+            var msg_box = $("#msg_box");
             if (passwd === $("#user_confirm_passwd").val()) {
                 var post_data = {
                     name: $("#user_name").val(),
@@ -18,18 +19,22 @@
                     dataType: "json",
                     success: function (result) {
                         if (result.ok) {
-                            $("#msg_box").text("Successfully registered!");
+                            msg_box.attr("class", "alert alert-success fade in");
+                            msg_box.html("<strong>Successfully registered!</strong>");
                             setTimeout(function () {
                                 location.href = "/login";
-                            }, 1000);
+                            }, 500);
                         } else {
-                            $("#msg_box").text(result.msg);
+                            msg_box.attr("class", "alert alert-warning fade in");
+                            msg_box.html("<strong>" + result.msg + "</strong>");
                         }
                         $("#reg_button").prop("disabled", false);
                     }
                 });
             } else {
-                $("#msg_box").text("Unmatched password and confirm password.");
+                msg_box.attr("class", "alert alert-warning fade in");
+                msg_box.html("<strong>Unmatched password and confirm password.</strong>");
+                $("#reg_button").prop("disabled", false);
             }
         }
 

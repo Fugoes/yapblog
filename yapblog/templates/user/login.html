@@ -21,7 +21,11 @@
                         msg_box.html("<strong>Success!</strong>");
                         $("#login_button").prop("disabled", false);
                         setTimeout(function () {
-                            location.href = document.referrer;
+                            if (document.referrer.replace(/.*\/\/.*\//, "/") === "/register") {
+                                location.href = "/";
+                            } else {
+                                location.href = document.referrer;
+                            }
                         }, 500);
                     } else {
                         if (data.msg === "already logged in") {

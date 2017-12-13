@@ -55,14 +55,18 @@
                     data: JSON.stringify(data),
                     dataType: "json",
                     success: function (data) {
-                        console.log(data);
-                        button.prop("disable", false);
-                        msg_box.attr("class", "alert alert-success fade in");
-                        msg_box.html("<strong>Success!</strong>");
+                        if (data.ok) {
+                            msg_box.attr("class", "alert alert-success fade in");
+                            msg_box.html("<strong>Success!</strong>");
+                        } else {
+                            msg_box.attr("class", "alert alert-warning fade in");
+                            msg_box.html("<strong>Failed!</strong>");
+                        }
                         setTimeout(function () {
                             msg_box.empty();
                             msg_box.removeAttr("class");
                         }, 2000);
+                        button.prop("disable", false);
                     }
                 });
             })
