@@ -85,7 +85,7 @@ def categories_get():
         articles = category.articles
         count = len(articles)
         if count > 0:
-            category_and_articles.append((category, articles))
+            category_and_articles.append((category, count, articles))
     return render_template("categories.html",
                            category_and_articles=category_and_articles,
                            title="Categories",
@@ -103,7 +103,7 @@ def categories_category_name(category_name):
         articles = category.articles
         count = len(articles)
         if count > 0:
-            category_and_articles.append((category, articles))
+            category_and_articles.append((category, count, articles))
         return render_template("categories.html",
                                category_and_articles=category_and_articles,
                                title="Categories",

@@ -4,7 +4,12 @@
 {% endblock %}
 {% block content %}
     {% for (tag, count, articles) in tag_and_articles %}
-        <h3>{{ tag.name_ }}</h3>
+        <h3><strong>#</strong><a class="tags-name" href="/tags/{{ tag.name_ }}"><I>{{ tag.name_ }}</I></a></h3>
+        {% if count == 1 %}
+            1 post
+        {% else %}
+            {{ count }} posts
+        {% endif %} under this tag:
         {% include "element/post-list.html" %}
     {% endfor %}
 {% endblock %}

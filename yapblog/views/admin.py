@@ -1,7 +1,7 @@
 __all__ = ["admin", "admin_article_add", "admin_article"]
 
 from flask import render_template
-from yapblog import app, config
+from yapblog import app
 from yapblog.models import User, Article, Comment
 from yapblog.lib.page import SideBar, get_navbar
 from yapblog.lib.auth import admin_required

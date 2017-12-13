@@ -3,8 +3,17 @@
 {% block js %}
 {% endblock %}
 {% block content %}
-    {% for (category, articles) in category_and_articles %}
-        <h3>{{ category.name_ }}</h3>
+    {% for (category, count, articles) in category_and_articles %}
+        <h3><strong>•</strong>
+            <a href="/categories/{{ category.name_ }}" class="tags-name">
+                {{ category.name_ }}
+            </a>
+        </h3>
+        {% if count == 1 %}
+            1 post
+        {% else %}
+            {{ count }} posts
+        {% endif %} under this category:
         {% include "element/post-list.html" %}
     {% endfor %}
 {% endblock %}
