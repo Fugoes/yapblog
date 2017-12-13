@@ -82,6 +82,15 @@ body {
     text-decoration: none;
 }
 
+.tags-name {
+    color: #828282;
+}
+
+.tags-name:hover {
+    color: #000000;
+    text-decoration: none;
+}
+
 .comment-author {
     font-size: 14px;
     color: #2A7AE2;
