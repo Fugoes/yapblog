@@ -2,10 +2,12 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                {{ sidebar_item.title }}
+                <a data-toggle="collapse" href="#{{ sidebar_item.id }}">
+                    {{ sidebar_item.title }}
+                </a>
             </h4>
         </div>
-        <div class="panel">
+        <div id="{{ sidebar_item.id }}" class="collapse in">
             <div class="tag-container">
                 {% for item in sidebar_item.items %}
                     <a class="tag-{{ item.count }}" href="{{ item.link }}">{{ item.text }}</a>

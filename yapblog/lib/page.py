@@ -39,6 +39,7 @@ class SideBar(object):
                 self.count = kwargs["count"]
 
         def __init__(self, **kwargs):
+            self.id = kwargs["id"]
             self.title = kwargs["title"]
             self.items = kwargs["items"]
             self.template = "element/tag_list.html"
