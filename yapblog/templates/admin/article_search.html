@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Admin|Article{% endblock %}
+{% block js %}
+    <script>
+        articles_info = $.getJSON("/api/article");
+        button = $("#refresh_btn");
+
+        function delete_article(id) {
+            $.ajax({
+                type: "DELETE",
+                url: "/api/article/" + id,
+                success: function (data) {
+                    $("#td" + id).html("Deleted");
+                }
+            })
+        }
+
+        function refresh(p) {
+            var body = $("#body");
+            body.html("");
+            p.done(function (data) {
+                if (data.ok) {
+                    $.each(data.articles, function (index, article) {
+                        body.append([
+                            "<tr>",
+                            "   <td>" + article.id + "</td>",
+                            "   <td>" + article.title + "</td>",
+                            "   <td>" + article.date_time + "</td>",
+                            "   <td id=\"td" + article.id + "\">",
+                            "       <a href=\"/admin/article/" + article.id + "\">Edit</a>",
+                            "       <a href=\"#\" onclick=\"delete_article(" + article.id + ")\">Delete</a>",
+                            "   </td>",
+                            "</tr>"
+                        ].join("\n"));
+                    })
+                }
+            })
+        }
+
+        function refresh_btn() {
+            button.prop("disabled", true);
+            var title_match = $("#article_title").val().trim();
+            var content_match = $("#article_markdown_content").val().trim();
+            var p = $.getJSON("/api/article", {
+                title_match: title_match,
+                content_match: content_match
+            });
+            refresh(p);
+            p.done(function (data) {
+                button.prop("disabled", false);
+            })
+        }
+
+        $(function () {
+            button.prop("disabled", true);
+            refresh(articles_info);
+            articles_info.done(function (data) {
+                button.prop("disabled", false);
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1>Articles</h1>
+    <div class="form-group">
+        <label>Title:</label>
+        <input class="form-control" id="article_title">
+    </div>
+    <div class="form-group">
+        <label>Content:</label>
+        <input class="form-control" id="article_markdown_content">
+    </div>
+    <button id="refresh_btn" class="btn btn-default" onclick="refresh_btn()">Search</button>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Operations</th>
+        </tr>
+        </thead>
+        <tbody id="body">
+        </tbody>
+    </table>
+{% endblock %}
