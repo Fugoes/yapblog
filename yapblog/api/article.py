@@ -144,7 +144,17 @@ def api_article_get():
         ]
     }
     """
-    articles = Article.query.order_by(db.desc(Article.date_time_)).all()
+    title_match = request.args.get("title_match")
+    content_match = request.args.get("content_match")
+    query_args = []
+    if title_match and len(title_match) > 0:
+        query_args.append(Article.title_.contains(title_match))
+    if content_match and len(content_match) > 0:
+        query_args.append(Article.markdown_content_.contains(content_match))
+    if len(query_args) == 0:
+        articles = Article.query.order_by(db.desc(Article.date_time_)).all()
+    else:
+        articles = Article.query.filter(*query_args).order_by(db.desc(Article.date_time_)).all()
     return ok(articles=[{
         "id": article.id_,
         "title": article.title_,
