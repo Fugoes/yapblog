@@ -11,7 +11,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config["SESSION_TYPE"] = config.SESSION_TYPE
 app.config["SECRET_KEY"] = config.SECRET_KEY
 # Init database
-db = SQLAlchemy(app)
+db = SQLAlchemy(app, session_options={"autoflush": False})
 # Init login_manager
 login_manager = LoginManager()
 login_manager.init_app(app)
