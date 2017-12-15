@@ -213,7 +213,11 @@ def api_article_post():
     for tag in get_tags_from_tag_names(tags):
         new_article.tags.append(tag)
     if category is not None:
-        new_article.category = Category(category)
+        if len(category) > 0:
+            _category = Category.query.filter_by(name_=category).first()
+            if _category is None:
+                _category = Category(category)
+            new_article.category = _category
     db.session.add(new_article)
     try:
         db.session.commit()
@@ -280,10 +284,11 @@ def api_article_article_id_patch(article_id):
     try:
         category_name = data["category"]
         if category_name is not None:
-            category = Category.query.filter_by(name_=category_name).first()
-            if category is None:
-                category = Category(category_name)
-            article.category = category
+            if len(category_name) > 0:
+                category = Category.query.filter_by(name_=category_name).first()
+                if category is None:
+                    category = Category(category_name)
+                article.category = category
     except KeyError:
         pass
     try:
