@@ -32,7 +32,7 @@ def article_year_month_title(year, month, title):
         date = article.date_time_
         if date.year == year and date.month == month:
             return render_template("article.html",
-                                   title=title,
+                                   title=title+" - "+config.WEBSITE_NAME,
                                    article=article,
                                    html_content=Markup(article.html_content_),
                                    page_id=article.page_id_,
@@ -57,7 +57,7 @@ def tags_tag_name(tag_name):
             tag_and_articles.append((tag, count, articles))
         return render_template("tags.html",
                                tag_and_articles=tag_and_articles,
-                               title="Tags",
+                               title="Tag: "+tag_name+" - "+config.WEBSITE_NAME,
                                navbar=get_navbar("Tags"),
                                sidebar=gen_sidebar())
 
@@ -73,7 +73,7 @@ def tags_get():
             tag_and_articles.append((tag, count, articles))
     return render_template("tags.html",
                            tag_and_articles=tag_and_articles,
-                           title="Tags",
+                           title="Tags"+" - "+config.WEBSITE_NAME,
                            navbar=get_navbar("Tags"),
                            sidebar=gen_sidebar())
 
@@ -88,7 +88,7 @@ def categories_get():
             category_and_articles.append((category, count, articles))
     return render_template("categories.html",
                            category_and_articles=category_and_articles,
-                           title="Categories",
+                           title="Categories"+" - "+config.WEBSITE_NAME,
                            navbar=get_navbar("Categories"),
                            sidebar=gen_sidebar())
 
@@ -106,7 +106,7 @@ def categories_category_name(category_name):
             category_and_articles.append((category, count, articles))
         return render_template("categories.html",
                                category_and_articles=category_and_articles,
-                               title="Categories",
+                               title="Category: "+category_name+" - "+config.WEBSITE_NAME,
                                navbar=get_navbar("Categories"),
                                sidebar=gen_sidebar())
 
@@ -119,6 +119,7 @@ def archives_year_month_get(year, month):
             year + 1, 1, 1, 0, 0, 0) - datetime.timedelta(days=1))).all()
     count = len(articles)
     return render_template("archives.html",
+                           title=str(year)+"-"+str(month)+" - "+config.WEBSITE_NAME,
                            time_and_posts=[((year, month), count, articles)],
                            navbar=get_navbar("Archives"),
                            sidebar=gen_sidebar())
@@ -132,6 +133,7 @@ def archives_get():
         count = len(articles)
         time_and_posts.append(((year, month), count, articles))
     return render_template("archives.html",
+                           title="Archives"+" - "+config.WEBSITE_NAME,
                            time_and_posts=time_and_posts,
                            navbar=get_navbar("Archives"),
                            sidebar=gen_sidebar())
