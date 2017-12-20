@@ -193,3 +193,15 @@ h5 {
 h6 {
     font-size: 15px;
 }
+
+@media (min-width: 768px) {
+    .navbar{
+        margin-top: -144px;
+        position:fixed;
+        width: 100%;
+        z-index: 1030;
+    }
+    .container{
+        margin-top: 72px;
+    }
+}
