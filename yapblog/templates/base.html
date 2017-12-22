@@ -17,11 +17,13 @@
         {% if user %}
             this_user = {
                 id: {{ user.id_ }},
-                name: "{{ user.name_ }}"
+                name: "{{ user.name_ }}",
+                is_admin: {% if user.is_admin_ %}true{% else %}false{% endif %}
             };
         {% else %}
             this_user = null;
         {% endif %}
+        console.log(this_user);
     </script>
     {% block js %}
     {% endblock %}

@@ -2,15 +2,44 @@ var this_page_id;
 var this_user;
 
 function gen_comment_body(comment_id) {
-    return [
-        "<div class='comment-body' id='comment" + comment_id + "'>",
-        "   <span class='comment-author'></span> said:",
-        "   <div class='comment-text'></div>",
-        "   <button class='btn btn-link btn-xs' style='padding: 0' onclick='create_reply_box(" + comment_id + ")'>",
-        "       Reply",
-        "   </button>",
-        "</div>"
-    ].join("\n");
+    if (this_user === null || !(this_user.is_admin)) {
+        return [
+            "<div class='comment-body' id='comment" + comment_id + "'>",
+            "   <span class='comment-author'></span> said:",
+            "   <div class='comment-text'></div>",
+            "   <button class='btn btn-link btn-xs' style='padding: 0' onclick='create_reply_box(" + comment_id + ")'>",
+            "       Reply",
+            "   </button>",
+            "</div>"
+        ].join("\n");
+    } else {
+        return [
+            "<div class='comment-body' id='comment" + comment_id + "'>",
+            "   <span class='comment-author'></span> said:",
+            "   <div class='comment-text'></div>",
+            "   <button class='btn btn-link btn-xs' style='padding: 0' onclick='create_reply_box(" + comment_id + ")'>",
+            "       Reply",
+            "   </button>",
+            "   <button class='btn btn-link btn-xs' style='padding: 0' onclick='delete_comment(" + comment_id + ")'>",
+            "       Delete",
+            "   </button>",
+            "</div>"
+        ].join("\n");
+    }
+}
+
+function delete_comment(comment_id) {
+    $.ajax({
+        type: "DELETE",
+        contentType: "application/json; charset=utf-8",
+        url: "/api/comment/" + comment_id,
+        dataType: "json",
+        success: function (data) {
+            if (data.ok) {
+                load_comment(comment_id);
+            }
+        }
+    });
 }
 
 function gen_list(p, id_to_replies) {

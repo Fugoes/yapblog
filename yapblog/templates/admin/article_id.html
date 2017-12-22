@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Admin|Article{% endblock %}
+{% block title %}Admin | Article{% endblock %}
 {% block js %}
     <script>
         article = $.getJSON("/api/article/{{ article_id }}/markdown_content");
