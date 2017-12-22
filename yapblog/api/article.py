@@ -11,6 +11,7 @@ from sqlalchemy.exc import IntegrityError
 from yapblog import app, db, config
 from yapblog.models import Article, Page, Tag, Category
 from yapblog.lib.api import ok, not_ok
+from yapblog.lib.auth import admin_api
 from yapblog.lib.format import markdown_to_html
 import yapblog.lib.regex as regex
 
@@ -25,6 +26,7 @@ def get_tags_from_tag_names(tags):
 
 
 @app.route("/api/article/<int:article_id>/markdown_content", methods=["GET"])
+@admin_api
 def api_article_article_id_get_markdown_content(article_id):
     """
     Get article's markdown_content with id of article_id.
@@ -96,6 +98,7 @@ def api_article_article_id_get(article_id):
 
 
 @app.route("/api/article/<int:article_id>", methods=["DELETE"])
+@admin_api
 def api_article_article_id_delete(article_id):
     """
     Delete the article with id of article_id.
@@ -118,6 +121,7 @@ def api_article_article_id_delete(article_id):
 
 
 @app.route("/api/article", methods=["GET"])
+@admin_api
 def api_article_get():
     """
     Get all articles info.
@@ -227,6 +231,7 @@ def api_article_post():
 
 
 @app.route("/api/article/<int:article_id>", methods=["PATCH"])
+@admin_api
 def api_article_article_id_patch(article_id):
     """
     Update an article.
