@@ -1,7 +1,7 @@
 from hashlib import md5
 from flask import render_template
 from flask_login import login_required, current_user
-from flask_login.utils import wraps
+from functools import wraps
 from yapblog.lib.api import not_ok
 from yapblog import config
 
