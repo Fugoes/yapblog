@@ -16,12 +16,12 @@ function gen_comment_body(comment_id) {
         return [
             "<div class='comment-body' id='comment" + comment_id + "'>",
             "   <span class='comment-author'></span> said:",
+            "   <a class='btn btn-link btn-xs' style='padding: 0' onclick='delete_comment(" + comment_id + ")'>",
+            "       Delete",
+            "   </a>",
             "   <div class='comment-text'></div>",
             "   <button class='btn btn-link btn-xs' style='padding: 0' onclick='create_reply_box(" + comment_id + ")'>",
             "       Reply",
-            "   </button>",
-            "   <button class='btn btn-link btn-xs' style='padding: 0' onclick='delete_comment(" + comment_id + ")'>",
-            "       Delete",
             "   </button>",
             "</div>"
         ].join("\n");
