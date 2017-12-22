@@ -1,6 +1,7 @@
 from yapblog import app, db
-from yapblog.models import Comment
 from yapblog.lib.api import not_ok, ok
+from yapblog.lib.auth import admin_api
+from yapblog.models import Comment
 from sqlalchemy.exc import IntegrityError
 
 
@@ -32,6 +33,7 @@ def api_comment_comment_id_get(comment_id):
 
 
 @app.route("/api/comment/<int:comment_id>", methods=["DELETE"])
+@admin_api
 def api_comment_comment_id_delete(comment_id):
     comment = Comment.query.filter_by(id_=comment_id).first()
     if comment is None:
