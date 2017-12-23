@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
     {% for (year, month), count, articles in time_and_posts %}
-        <h3>{{ year }}-{{ "%02d" % month }}</h3>
+        <h3>{{ monthname }}, {{ year }}</h3>
         {{ count }} {% if count == 1 %}post{% else %}posts{% endif %}
         {% include "element/post-list.html" %}
     {% endfor %}

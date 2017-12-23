@@ -118,8 +118,10 @@ def archives_year_month_get(year, month):
         datetime.datetime(year, month + 1, 1, 0, 0, 0) if month < 12 else datetime.datetime(
             year + 1, 1, 1, 0, 0, 0) - datetime.timedelta(days=1))).all()
     count = len(articles)
+    monthname = datetime.datetime(year, month, 1, 0, 0, 0).strftime("%B")
     return render_template("archives.html",
-                           title=str(year)+"-"+str(month)+" - "+config.WEBSITE_NAME,
+                           monthname=monthname,
+                           title=monthname+", "+str(year)+" - "+config.WEBSITE_NAME,
                            time_and_posts=[((year, month), count, articles)],
                            navbar=get_navbar("Archives"),
                            sidebar=gen_sidebar())
@@ -131,8 +133,10 @@ def archives_get():
     for (year, month), group in archives_data():
         articles = list(group)
         count = len(articles)
+        monthname = datetime.datetime(year, month, 1, 0, 0, 0).strftime("%B")
         time_and_posts.append(((year, month), count, articles))
     return render_template("archives.html",
+                           monthname=monthname,
                            title="Archives"+" - "+config.WEBSITE_NAME,
                            time_and_posts=time_and_posts,
                            navbar=get_navbar("Archives"),
