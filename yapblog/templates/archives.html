@@ -3,7 +3,8 @@
 {% block js %}
 {% endblock %}
 {% block content %}
-    {% for (year, month), count, articles in time_and_posts %}        {% if month == 1 %}
+    {% for (year, month), count, articles in time_and_posts %}
+        {% if month == 1 %}
             {% set monthname = 'January' %}
         {% elif month == 2 %}
             {% set monthname = 'February' %}
