@@ -3,7 +3,31 @@
 {% block js %}
 {% endblock %}
 {% block content %}
-    {% for (year, month), count, articles in time_and_posts %}
+    {% for (year, month), count, articles in time_and_posts %}        {% if month == 1 %}
+            {% set monthname = 'January' %}
+        {% elif month == 2 %}
+            {% set monthname = 'February' %}
+        {% elif month == 3 %}
+            {% set monthname = 'March' %}
+        {% elif month == 4 %}
+            {% set monthname = 'April' %}
+        {% elif month == 5 %}
+            {% set monthname = 'May' %}
+        {% elif month == 6 %}
+            {% set monthname = 'June' %}
+        {% elif month == 7 %}
+            {% set monthname = 'July' %}
+        {% elif month == 8 %}
+            {% set monthname = 'August' %}
+        {% elif month == 9 %}
+            {% set monthname = 'September' %}
+        {% elif month == 10 %}
+            {% set monthname = 'October' %}
+        {% elif month == 11 %}
+            {% set monthname = 'November' %}
+        {% elif month == 12 %}
+            {% set monthname = 'December' %}
+        {% endif %}
         <h3>{{ monthname }}, {{ year }}</h3>
         {{ count }} {% if count == 1 %}post{% else %}posts{% endif %}
         {% include "element/post-list.html" %}
