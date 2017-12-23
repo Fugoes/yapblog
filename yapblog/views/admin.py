@@ -23,13 +23,6 @@ sidebar = SideBar(items=[
             SideBar.CollapsibleList.Item(link="/admin/article/search", text="Search Articles"),
             SideBar.CollapsibleList.Item(link="/admin/article/add", text="Add New Article"),
         ],
-    ),
-    SideBar.CollapsibleList(
-        id="comment-management",
-        title="Comment Management",
-        items=[
-            SideBar.CollapsibleList.Item(link="/admin/comment", text="View All Comments"),
-        ],
     )
 ])
 
