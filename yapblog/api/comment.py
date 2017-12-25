@@ -45,3 +45,19 @@ def api_comment_comment_id_delete(comment_id):
         db.session.rollback()
         return not_ok()
     return ok(id=comment.id_, is_deleted=comment.is_deleted_)
+
+
+@app.route("/api/comment", methods=["GET"])
+@admin_api
+def api_comment():
+    comments = Comment.query.all()
+    return ok(comments=[{
+        "id": comment.id_,
+        "author": {
+            "name": comment.user.name_,
+            "id": comment.user.id_,
+        },
+        "text": comment.text_,
+        "is_deleted": comment.is_deleted_,
+        "page_id": comment.page_id_,
+    } for comment in comments])

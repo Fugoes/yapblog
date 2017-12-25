@@ -94,3 +94,11 @@ def admin_user_add():
     return render_template("admin/user_add.html",
                            navbar=get_navbar("Admin"),
                            sidebar=sidebar)
+
+
+@app.route("/admin/comment", methods=["GET"])
+@admin_required
+def admin_comment():
+    return render_template("admin/comment.html",
+                           navbar=get_navbar("Admin"),
+                           sidebar=sidebar)
