@@ -1,8 +1,11 @@
 from flask import Flask, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import os
 import time
 import yapblog.config as config
+
+os.environ["NLS_LANG"] = ".UTF8"
 
 # Init app
 app = Flask(__name__)
@@ -24,6 +27,7 @@ from yapblog.views import *
 # Load all apis
 from yapblog.api import *
 
+
 @app.before_request
 def before_request():
     start_time = time.time()
@@ -35,4 +39,3 @@ def load_user(user_id):
     """ Required by flask_login """
     user_id = int(user_id)
     return User.query.filter_by(id_=user_id).first()
-

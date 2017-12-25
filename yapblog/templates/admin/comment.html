@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Admin | Comment{% endblock %}
+{% block js %}
+    <script>
+        api_url = "/api/comment";
+        info = $.getJSON(api_url);
+        button = $("#refresh_btn");
+
+        function delete_item(id) {
+            $.ajax({
+                type: "DELETE",
+                url: "/api/comment/" + id,
+                success: function (data) {
+                    if (data.ok) {
+                        $("#td" + id).html("Deleted");
+                    }
+                }
+            })
+        }
+
+        function refresh(p) {
+            var body = $("#body");
+            body.html("");
+            p.done(function (data) {
+                if (data.ok) {
+                    $.each(data.comments, function (index, comment) {
+                        if (!comment.is_deleted) {
+                            body.append([
+                                "<tr>",
+                                "   <td>" + comment.id + "</td>",
+                                "   <td>" + comment.author.name + "</td>",
+                                "   <td>" + comment.text + "</td>",
+                                "   <td id=\"td" + comment.id + "\">",
+                                "       <a href=\"#\" onclick=\"delete_item(" + comment.id + ")\">Delete</a>",
+                                "   </td>",
+                                "</tr>"
+                            ].join("\n"));
+                        }
+                    })
+                }
+            })
+        }
+
+        function refresh_btn() {
+            button.prop("disabled", true);
+            var p = $.getJSON(api_url);
+            refresh(p);
+            p.done(function (data) {
+                button.prop("disabled", false);
+            })
+        }
+
+        $(function () {
+            button.prop("disabled", true);
+            refresh(info);
+            info.done(function (data) {
+                button.prop("disabled", false);
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1>Comments</h1>
+    <button id="refresh_btn" class="btn btn-default" onclick="refresh_btn()">Refresh</button>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Author</th>
+            <th>Text</th>
+            <th>Operation</th>
+        </tr>
+        </thead>
+        <tbody id="body">
+        </tbody>
+    </table>
+{% endblock %}
