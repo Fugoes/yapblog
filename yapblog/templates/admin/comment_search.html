@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Admin | Article{% endblock %}
+{% block js %}
+    <script>
+        items_info = $.getJSON("/api/comment");
+        button = $("#refresh_btn");
+
+        function delete_item(id) {
+            $.ajax({
+                type: "DELETE",
+                url: "/api/comment/" + id,
+                success: function (data) {
+                    $("#td" + id).html("Deleted");
+                }
+            })
+        }
+
+        function refresh(p) {
+            var body = $("#body");
+            body.html("");
+            p.done(function (data) {
+                if (data.ok) {
+                    $.each(data.comments, function (index, comment) {
+                        if (!comment.is_deleted) {
+                            body.append([
+                                "<tr>",
+                                "   <td>" + comment.id + "</td>",
+                                "   <td>" + comment.author.name + "</td>",
+                                "   <td>" + comment.text + "</td>",
+                                "   <td id=\"td" + comment.id + "\">",
+                                "       <a href=\"#\" onclick=\"delete_item(" + comment.id + ")\">Delete</a>",
+                                "   </td>",
+                                "</tr>"
+                            ].join("\n"));
+                        }
+                    })
+                }
+            })
+        }
+
+        function refresh_btn() {
+            button.prop("disabled", true);
+            var author_match = $("#comment_author").val().trim();
+            var text_match = $("#comment_text").val().trim();
+            var p = $.getJSON("/api/comment", {
+                author_match: author_match,
+                text_match: text_match
+            });
+            p.done(function (data) {
+                button.prop("disabled", false);
+            });
+            refresh(p);
+        }
+
+        $(function () {
+            button.prop("disabled", true);
+            refresh(items_info);
+            items_info.done(function (data) {
+                button.prop("disabled", false);
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1>Comments</h1>
+    <div class="form-group">
+        <label>Author:</label>
+        <input class="form-control" id="comment_author">
+    </div>
+    <div class="form-group">
+        <label>Text:</label>
+        <input class="form-control" id="comment_text">
+    </div>
+    <button id="refresh_btn" class="btn btn-default" onclick="refresh_btn()">Refresh</button>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Author</th>
+            <th>Text</th>
+            <th>Operation</th>
+        </tr>
+        </thead>
+        <tbody id="body">
+        </tbody>
+    </table>
+{% endblock %}

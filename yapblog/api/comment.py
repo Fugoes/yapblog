@@ -1,7 +1,8 @@
+from flask import request
 from yapblog import app, db
 from yapblog.lib.api import not_ok, ok
 from yapblog.lib.auth import admin_api
-from yapblog.models import Comment
+from yapblog.models import Comment, User
 from sqlalchemy.exc import IntegrityError
 
 
@@ -50,7 +51,17 @@ def api_comment_comment_id_delete(comment_id):
 @app.route("/api/comment", methods=["GET"])
 @admin_api
 def api_comment():
-    comments = Comment.query.all()
+    author_match = request.args.get("author_match")
+    text_match = request.args.get("text_match")
+    query_args = []
+    if author_match and len(author_match) > 0:
+        query_args.append(Comment.user.has(User.name_.contains(author_match)))
+    if text_match and len(text_match) > 0:
+        query_args.append(Comment.text_.contains(text_match))
+    if len(query_args) == 0:
+        comments = Comment.query.all()
+    else:
+        comments = Comment.query.filter(*query_args).all()
     return ok(comments=[{
         "id": comment.id_,
         "author": {

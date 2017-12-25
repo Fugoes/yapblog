@@ -29,6 +29,7 @@ sidebar = SideBar(items=[
         title="Comment Management",
         items=[
             SideBar.CollapsibleList.Item(link="/admin/comment", text="View All Comments"),
+            SideBar.CollapsibleList.Item(link="/admin/comment/search", text="Search Comments"),
         ],
     )
 ])
@@ -100,5 +101,13 @@ def admin_user_add():
 @admin_required
 def admin_comment():
     return render_template("admin/comment.html",
+                           navbar=get_navbar("Admin"),
+                           sidebar=sidebar)
+
+
+@app.route("/admin/comment/search", methods=["GET"])
+@admin_required
+def admin_comment_search():
+    return render_template("admin/comment_search.html",
                            navbar=get_navbar("Admin"),
                            sidebar=sidebar)
