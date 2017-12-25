@@ -58,6 +58,7 @@
 
 {% block content %}
     <h1>Articles</h1>
+    <button id="refresh_btn" class="btn btn-default" onclick="refresh_btn()">Refresh</button>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -70,5 +71,4 @@
         <tbody id="body">
         </tbody>
     </table>
-    <button id="refresh_btn" class="btn btn-default" onclick="refresh_btn()">Refresh</button>
 {% endblock %}
