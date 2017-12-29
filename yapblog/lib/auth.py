@@ -4,10 +4,16 @@ from flask_login import login_required, current_user
 from functools import wraps
 from yapblog.lib.api import not_ok
 from yapblog import config
+import random
+import string
 
 
-def md5_with_salt(passwd):
-    return md5((passwd + config.PASSWD_HASH_SALT).encode()).hexdigest()
+def gen_salt():
+    return ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
+
+
+def md5_with_salt(passwd, salt):
+    return md5((md5((passwd + config.PASSWD_HASH_SALT).encode()).hexdigest() + salt).encode()).hexdigest()
 
 
 def admin_required(func):
