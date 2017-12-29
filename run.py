@@ -3,9 +3,10 @@
 from yapblog import app, db
 from yapblog.models import User
 import yapblog.config as config
-from yapblog.lib.auth import md5_with_salt
+from yapblog.lib.auth import md5_with_salt, gen_salt
 
-user = User("debug", "debug@example.com", md5_with_salt("debug"))
+salt = gen_salt()
+user = User("debug", "debug@example.com", md5_with_salt("debug", salt), salt)
 db.session.add(user)
 try:
     db.session.commit()

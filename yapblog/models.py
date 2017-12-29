@@ -124,14 +124,16 @@ class User(db.Model):
     name_ = db.Column("name", db.String(100), unique=True)
     email_ = db.Column("email", db.String(100), unique=True)
     passwd_hash_ = db.Column("passwd_hash", db.String(32))
+    salt_ = db.Column("salt", db.String(32))
     is_admin_ = db.Column("is_admin", db.Boolean, nullable=False)
     # Relationship
     comments = db.relationship("Comment", back_populates="user", uselist=True)
 
-    def __init__(self, name, email, passwd_hash, is_admin=False):
+    def __init__(self, name, email, passwd_hash, salt, is_admin=False):
         self.name_ = name
         self.email_ = email
         self.passwd_hash_ = passwd_hash
+        self.salt_ = salt
         self.is_admin_ = is_admin
 
     @property

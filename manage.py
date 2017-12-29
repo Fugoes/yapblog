@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from sys import argv
-from yapblog.lib.auth import md5_with_salt
+from yapblog.lib.auth import md5_with_salt, gen_salt
 import yapblog.config as config
 
 
@@ -21,9 +21,11 @@ if len(argv) == 2:
         db.drop_all()
 
         db.create_all()
+        salt = gen_salt()
         db.session.add(User(name=config.ADMIN_USER_NAME,
                             email=config.ADMIN_USER_EMAIL,
-                            passwd_hash=md5_with_salt(config.ADMIN_USER_PASSWORD),
+                            passwd_hash=md5_with_salt(config.ADMIN_USER_PASSWORD, salt),
+                            salt=salt,
                             is_admin=True))
         db.session.commit()
 

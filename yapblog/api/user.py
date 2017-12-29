@@ -12,7 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from yapblog import app, db
 from yapblog.models import User
 from yapblog.lib.api import ok, not_ok
-from yapblog.lib.auth import md5_with_salt
+from yapblog.lib.auth import md5_with_salt, gen_salt
 
 
 @app.route("/api/user/me", methods=["GET"])
@@ -70,7 +70,8 @@ def api_user_post():
         passwd = data["passwd"]
     except KeyError:
         return not_ok()
-    new_user = User(name, email, md5_with_salt(passwd))
+    salt = gen_salt()
+    new_user = User(name, email, md5_with_salt(passwd, salt), salt)
     db.session.add(new_user)
     try:
         db.session.commit()
@@ -119,7 +120,7 @@ def api_user_login():
         user = User.query.filter_by(name_=name).first()
         if user is None:
             return not_ok(msg="invalid")
-        elif user.passwd_hash_ != md5_with_salt(passwd):
+        elif user.passwd_hash_ != md5_with_salt(passwd, user.salt_):
             return not_ok(msg="invalid")
         else:
             login_user(user)
