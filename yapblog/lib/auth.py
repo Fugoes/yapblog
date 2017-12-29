@@ -35,3 +35,13 @@ def admin_api(func):
 
     _func.__name__ = func.__name__
     return _func
+
+
+def no_login_api(func):
+    def _func(*args, **kwargs):
+        if not current_user.is_anonymous:
+            return not_ok()
+        return func(*args, **kwargs)
+
+    _func.__name__ = func.__name__
+    return _func
